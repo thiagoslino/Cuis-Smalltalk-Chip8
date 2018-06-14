@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3345] on 11 June 2018 at 4:05:26 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3345] on 14 June 2018 at 6:03:25 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 25!
+!provides: 'Chip8' 1 26!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
 
@@ -282,19 +282,17 @@ handlesMouseOver: aMorphicEvent
 	^ true
 	! !
 
-!Chip8Morph methodsFor: 'stepping' stamp: 'TSL 6/11/2018 10:55:02'!
+!Chip8Morph methodsFor: 'stepping' stamp: 'TSL 6/14/2018 14:48:10'!
 stepAt: aTimestamp
-
 	self chip8 emulateCycle.
-	"chip8 tickTimers."
 	chip8 needRedraw ifTrue: [ self redrawNeeded  ].! !
 
-!Chip8Morph methodsFor: 'testing' stamp: 'TSL 6/11/2018 10:56:38'!
+!Chip8Morph methodsFor: 'testing' stamp: 'TSL 6/14/2018 18:03:18'!
 stepTime
-	"16 = +- 60 per second" 
-	^ 16! !
+	"correct is 16 = +- 60 per second" 
+	^ 8! !
 
-!Chip8Morph methodsFor: 'drawing' stamp: 'TSL 6/7/2018 16:22:53'!
+!Chip8Morph methodsFor: 'drawing' stamp: 'TSL 6/14/2018 14:48:43'!
 drawOn: aCanvas
 	super drawOn: aCanvas.
 	0 to: (self chip8 display size -1) do: [ :i | 
@@ -303,12 +301,12 @@ drawOn: aCanvas
 			ifTrue: [ color := Color black ]
 			ifFalse: [ color := Color white ].
 			
-			x := i \\ 64.
-			y := (i / 64) floor integerPart.
-			position := (x * 10)@(y* 10).
+		x := i \\ 64.
+		y := (i / 64) floor integerPart.
+		position := (x * 10)@(y* 10).
 			
-			aCanvas fillRectangle: (position corner: (position + (10@10))) color: color.
-		]
+		aCanvas fillRectangle: (position corner: (position + (10@10))) color: color.
+	]
 	! !
 
 !Chip8Morph methodsFor: 'run' stamp: 'TSL 6/11/2018 15:15:43'!
@@ -860,25 +858,26 @@ loadFontSet
 addDrawFlag
 	needRedraw := true! !
 
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 11:07:33'!
+clearDisplay
+	display atAllPut: 0.
+! !
+
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:21'!
 decrementSP
 	sp := sp - 1! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/7/2018 17:23:43'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 10:36:17'!
 emulateCycle
 	| opcode operationCodeClass |
 	"memory[pc] << 8 | memory[pc + 1];"
 	opcode := ((memory at: pc +1)  bitShift: 8) + (memory at: pc + 2).
 
-	Transcript show: (opcode printStringBase: 16) .
-	Transcript newLine.
 	operationCodeClass := OperationCode operationCodeClassFor: opcode.
 	operationCodeClass isNil
-"		ifTrue: [
-			Transcript show: 'Operation Code notFound: ',  (opcode bitAnd: 16rF000) asInteger hex; cr ]"
 		ifFalse: [ operationCodeClass executeInstructionFor: opcode on: self ].
 		
-		self tickTimers.
+	self tickTimers.
 	! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:35'!
@@ -914,11 +913,6 @@ tickTimers
 				self playSound ].
 		self delayTimer > 0 
 			ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:41:25'!
-clearDisplay
-	display atAllPut: 0.
-! !
 
 !Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:19'!
 delayTimer
@@ -1394,7 +1388,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rE000! !
 
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:17:58'!
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/14/2018 13:38:29'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	| x  fx07 fx0A fx15 fx18 fx1E fx29 fx33 fx55 fx65 |
 	fx07 := 16r0007.
@@ -1473,7 +1467,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 		ifTrue: [
 			"FX55 Stores V0 to VX in memory starting at address I"
 			0 to: x do: [ :idx |
-				aChip8 memoryAt: (idx) put: (aChip8 registerAt: idx) ].
+				aChip8 memoryAt: idx put: (aChip8 registerAt: idx) ].
 			aChip8 i: (aChip8 i + x + 1).
 			aChip8 incrementPC.
 		].
