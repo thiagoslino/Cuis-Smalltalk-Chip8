@@ -47,5 +47,4 @@ as follows:
 | `F`        | `V`          |
 
 ## TODO
-* Enable sound
 * Better morphic configuration
