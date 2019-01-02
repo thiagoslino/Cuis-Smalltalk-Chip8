@@ -1,6 +1,7 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3345] on 14 June 2018 at 6:03:25 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3543] on 2 January 2019 at 11:18:55 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 26!
+!provides: 'Chip8' 1 27!
+!requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
 
@@ -895,10 +896,10 @@ loadProgram: pathToROM
 	rom := pathToROM asFileEntry binaryContents.
 	memory replaceFrom: 16r201 to: (16r201 + rom size - 1) with: rom asByteArray! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/7/2018 13:41:54'!
+!Chip8 methodsFor: 'emulation' stamp: 'ThiagoLino 1/2/2019 11:15:11'!
 playSound
 	self soundTimer = 0
-		ifTrue:["Play a beep"]
+		ifTrue:[ Beeper beepPrimitive ]
 			! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:50:01'!
