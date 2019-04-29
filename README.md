@@ -58,3 +58,4 @@ as follows:
 
 ## TODO
 * Better morphic configuration
+* Better sound (beep is primitive)
