@@ -7,6 +7,11 @@ This project is a Chip 8 emulator (interpreter) written in [Smalltalk (Cuis)](ht
 
 The original goal of these project was to learn how to code a simple emulator in smalltalk.
 
+![alt text](https://github.com/thiagoslino/Cuis-Smalltalk-Chip8/blob/master/screen.png "Chip-8 for Cuis")
+
+## ROMs
+A collection of public domain ROMs that can be used with this emulator can be found at https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+
 
 ## Running a ROM
 After cloning this repo, open a workspace in Cuis and type:
@@ -19,7 +24,12 @@ And then:
 	loadProgram: '/path/to/rom/filename';
 	asMorph) run.
 
-You can get Chip-8 roms at https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+
+## Resources
+* https://en.wikipedia.org/wiki/CHIP-8
+* http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+* http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+
 
 ## Regular Keys
 
