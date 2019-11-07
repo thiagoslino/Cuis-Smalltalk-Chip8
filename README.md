@@ -20,7 +20,7 @@ Feature require: #'Chip8'.
 
 And then:
 
-Chip8 runProgram: '/path/to/rom/filename.
+Chip8 runProgram: '/path/to/rom/filename'.
 
 
 ## Resources
