@@ -16,12 +16,14 @@ A collection of public domain ROMs that can be used with this emulator can be fo
 ## Running a ROM
 After cloning this repo, open a workspace in Cuis and type:
 
+```
 Feature require: #'Chip8'.
+```
 
 And then:
-
+```
 Chip8 runProgram: '/path/to/rom/filename'.
-
+```
 
 ## Resources
 * https://en.wikipedia.org/wiki/CHIP-8
