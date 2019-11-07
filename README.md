@@ -20,9 +20,7 @@ Feature require: #'Chip8'.
 
 And then:
 
-(Chip8 new 
-	loadProgram: '/path/to/rom/filename';
-	asMorph) run.
+Chip8 runProgram: '/path/to/rom/filename.
 
 
 ## Resources
