@@ -1,218 +1,218 @@
-'From Cuis 5.0 [latest update: #3946] on 7 November 2019 at 10:42:06 am'!
+'From Cuis 5.0 [latest update: #3960] on 22 November 2019 at 12:45:00 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 28!
+!provides: 'Chip8' 1 29!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
 
 
-!classDefinition: #Chip8Morph category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #Chip8Morph category: #Chip8!
 RectangleLikeMorph subclass: #Chip8Morph
 	instanceVariableNames: 'chip8 canLoop'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'Chip8Morph class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'Chip8Morph class' category: #Chip8!
 Chip8Morph class
 	instanceVariableNames: ''!
 
-!classDefinition: #Chip8TestCase category: #'Chip8-Tests' stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #Chip8TestCase category: #'Chip8-Tests'!
 TestCase subclass: #Chip8TestCase
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8-Tests'!
-!classDefinition: 'Chip8TestCase class' category: #'Chip8-Tests' stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'Chip8TestCase class' category: #'Chip8-Tests'!
 Chip8TestCase class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeTestCase category: #'Chip8-Tests' stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeTestCase category: #'Chip8-Tests'!
 TestCase subclass: #OperationCodeTestCase
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8-Tests'!
-!classDefinition: 'OperationCodeTestCase class' category: #'Chip8-Tests' stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeTestCase class' category: #'Chip8-Tests'!
 OperationCodeTestCase class
 	instanceVariableNames: ''!
 
-!classDefinition: #Chip8 category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #Chip8 category: #Chip8!
 Object subclass: #Chip8
 	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'Chip8 class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'Chip8 class' category: #Chip8!
 Chip8 class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode category: #Chip8!
 Object subclass: #OperationCode
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode class' category: #Chip8!
 OperationCode class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode0nnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode0nnn category: #Chip8!
 OperationCode subclass: #OperationCode0nnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode0nnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode0nnn class' category: #Chip8!
 OperationCode0nnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode1nnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode1nnn category: #Chip8!
 OperationCode subclass: #OperationCode1nnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode1nnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode1nnn class' category: #Chip8!
 OperationCode1nnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode2nnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode2nnn category: #Chip8!
 OperationCode subclass: #OperationCode2nnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode2nnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode2nnn class' category: #Chip8!
 OperationCode2nnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode3xnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode3xnn category: #Chip8!
 OperationCode subclass: #OperationCode3xnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode3xnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode3xnn class' category: #Chip8!
 OperationCode3xnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode4xnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode4xnn category: #Chip8!
 OperationCode subclass: #OperationCode4xnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode4xnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode4xnn class' category: #Chip8!
 OperationCode4xnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode5xy0 category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode5xy0 category: #Chip8!
 OperationCode subclass: #OperationCode5xy0
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode5xy0 class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode5xy0 class' category: #Chip8!
 OperationCode5xy0 class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode6xnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode6xnn category: #Chip8!
 OperationCode subclass: #OperationCode6xnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode6xnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode6xnn class' category: #Chip8!
 OperationCode6xnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode7xnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode7xnn category: #Chip8!
 OperationCode subclass: #OperationCode7xnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode7xnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode7xnn class' category: #Chip8!
 OperationCode7xnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode8xyn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode8xyn category: #Chip8!
 OperationCode subclass: #OperationCode8xyn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode8xyn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode8xyn class' category: #Chip8!
 OperationCode8xyn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode9xy0 category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCode9xy0 category: #Chip8!
 OperationCode subclass: #OperationCode9xy0
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCode9xy0 class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCode9xy0 class' category: #Chip8!
 OperationCode9xy0 class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeAnnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeAnnn category: #Chip8!
 OperationCode subclass: #OperationCodeAnnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeAnnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeAnnn class' category: #Chip8!
 OperationCodeAnnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeBnnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeBnnn category: #Chip8!
 OperationCode subclass: #OperationCodeBnnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeBnnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeBnnn class' category: #Chip8!
 OperationCodeBnnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeCxnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeCxnn category: #Chip8!
 OperationCode subclass: #OperationCodeCxnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeCxnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeCxnn class' category: #Chip8!
 OperationCodeCxnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeDxyn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeDxyn category: #Chip8!
 OperationCode subclass: #OperationCodeDxyn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeDxyn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeDxyn class' category: #Chip8!
 OperationCodeDxyn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeExnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeExnn category: #Chip8!
 OperationCode subclass: #OperationCodeExnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeExnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeExnn class' category: #Chip8!
 OperationCodeExnn class
 	instanceVariableNames: ''!
 
-!classDefinition: #OperationCodeFxnn category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: #OperationCodeFxnn category: #Chip8!
 OperationCode subclass: #OperationCodeFxnn
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
-!classDefinition: 'OperationCodeFxnn class' category: #Chip8 stamp: 'tsl 11/7/2019 10:42:06'!
+!classDefinition: 'OperationCodeFxnn class' category: #Chip8!
 OperationCodeFxnn class
 	instanceVariableNames: ''!
 
@@ -907,10 +907,13 @@ loadProgram: pathToROM
 	rom := pathToROM asFileEntry binaryContents.
 	memory replaceFrom: 16r201 to: (16r201 + rom size - 1) with: rom asByteArray! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'ThiagoLino 1/2/2019 11:15:11'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 11/22/2019 12:43:29'!
 playSound
 	self soundTimer = 0
-		ifTrue:[ Beeper beepPrimitive ]
+		ifTrue:[ 
+			[((FMSound pluckedElecBass)
+				soundForPitch: 400.0 dur: 0.02
+				loudness: 0.8) play ] forkNamed: 'BeepSignal'.]
 			! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:50:01'!
