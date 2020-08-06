@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3960] on 22 November 2019 at 12:45:00 pm'!
+'From Cuis 5.0 [latest update: #4342] on 6 August 2020 at 9:56:00 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 29!
+!provides: 'Chip8' 1 30!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -308,7 +308,7 @@ drawOn: aCanvas
 	]
 	! !
 
-!Chip8Morph methodsFor: 'run' stamp: 'tsl 11/7/2019 10:40:29'!
+!Chip8Morph methodsFor: 'run' stamp: 'tsl 8/6/2020 09:55:24'!
 run
 	| layout1 closeButton|
 	layout1 := LayoutMorph newColumn.
@@ -318,7 +318,7 @@ run
 
 	closeButton _ (PluggableButtonMorph model: layout1 action: #delete)
 		label: 'close';
-		morphExtent: 50@30;
+		morphExtent: 60@30;
 		yourself.
 
 	layout1 addMorph: closeButton.
