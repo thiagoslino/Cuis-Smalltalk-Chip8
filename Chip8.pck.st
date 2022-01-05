@@ -1,13 +1,13 @@
-'From Cuis 5.0 [latest update: #4413] on 19 October 2020 at 6:23:43 pm'!
+'From Cuis 6.0 [latest update: #5038] on 5 January 2022 at 12:53:57 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 31!
+!provides: 'Chip8' 1 32!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: 'Chip8'!
 SystemOrganization addCategory: 'Chip8-Tests'!
 
 
 !classDefinition: #Chip8Morph category: 'Chip8'!
-WidgetMorph subclass: #Chip8Morph
+BoxedMorph subclass: #Chip8Morph
 	instanceVariableNames: 'chip8 canLoop'
 	classVariableNames: ''
 	poolDictionaries: ''
