@@ -10,7 +10,9 @@ The original goal of these project was to learn how to code a simple emulator in
 ![alt text](https://github.com/thiagoslino/Cuis-Smalltalk-Chip8/blob/master/screen.png "Chip-8 for Cuis")
 
 ## ROMs
-A collection of public domain ROMs that can be used with this emulator can be found at https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+A collection of public domain ROMs that can be used with this emulator can be found at:
+ - https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+ - https://johnearnest.github.io/chip8Archive/?sort=platform
 
 
 ## Running a ROM
