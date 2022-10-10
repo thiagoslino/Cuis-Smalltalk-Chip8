@@ -26,6 +26,7 @@ And then:
 ```Smalltalk
 Chip8 runProgram: '/path/to/rom/filename'.
 ```
+You can change the game speed. The CHIP-8 had no specified clock speed, so we'll use a delay to control it. Different games run best at different speeds, so we can control it here. See Chip8 >> delay and Chip8 >> initialize.
 
 ## Resources
 * https://en.wikipedia.org/wiki/CHIP-8
