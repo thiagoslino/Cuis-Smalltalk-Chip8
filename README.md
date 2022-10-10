@@ -40,25 +40,13 @@ The original Chip 8 had a keypad with the numbered keys 0 - 9 and A - F (16
 keys in total). Without any modifications to the emulator, the keys are mapped
 as follows:
 
-| Chip 8 Key | Keyboard Key |
+| Chip 8 Keypad | Keyboard Key |
 | :--------: | :----------: |
-| `1`        | `1`          |
-| `2`        | `2`          |
-| `3`        | `3`          |
-| `4`        | `Q`          |
-| `5`        | `W`          |
-| `6`        | `E`          |
-| `7`        | `A`          |
-| `8`        | `S`          |
-| `9`        | `D`          |
-| `0`        | `X`          |
-| `A`        | `Z`          |
-| `B`        | `C`          |
-| `C`        | `4`          |
-| `D`        | `R`          |
-| `E`        | `F`          |
-| `F`        | `V`          |
+| `1` `2` `3` `C` | `1` `2` `3` `4` |
+| `4` `5` `6` `D` | `Q` `W` `E` `R` |
+| `7` `8` `9` `E` | `A` `S` `D` `F` |
+| `A` `0` `B` `F` | `Z` `X` `C` `V` |
 
 ## TODO
-* Better morphic configuration
-
+* Automatic ROMs download from Zophar
+* Better morphic configuration (to configure speed, roms download button, pause, etc...)
