@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5494] on 10 October 2022 at 10:12:42 am'!
+'From Cuis 6.0 [latest update: #5494] on 10 October 2022 at 11:14:26 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 33!
+!provides: 'Chip8' 1 34!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: 'Chip8'!
 SystemOrganization addCategory: 'Chip8-Tests'!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: 'Chip8-Tests'!
 
 !classDefinition: #Chip8Morph category: 'Chip8'!
 BoxedMorph subclass: #Chip8Morph
-	instanceVariableNames: 'chip8 canLoop'
+	instanceVariableNames: 'chip8 delay'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
@@ -38,7 +38,7 @@ OperationCodeTestCase class
 
 !classDefinition: #Chip8 category: 'Chip8'!
 Object subclass: #Chip8
-	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw delay'
+	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8'!
@@ -230,11 +230,11 @@ Chip8 runProgram:  '/PATH/TO/CHIP8/ROM'.
 !OperationCode commentStamp: '<historical>' prior: 0!
 OpCode Bank!
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 10/19/2020 18:21:20'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:13:34'!
 initialize
 	super initialize.
 	extent := (Chip8 displayWidth * 10)@(Chip8 displayHeight * 10).
-	color := Color black.
+	delay := 2.
 ! !
 
 !Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 14:11:42'!
@@ -244,6 +244,16 @@ chip8
 !Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/6/2018 18:35:52'!
 chip8: aChip8
 	chip8 := aChip8.! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:09:50'!
+delay
+	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
+	^ delay! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:10:04'!
+delay: anInteger
+	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
+	delay _ anInteger! !
 
 !Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 09:04:05'!
 keyMapping
@@ -281,9 +291,9 @@ handlesMouseOver: aMorphicEvent
 	^ true
 	! !
 
-!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 10/10/2022 10:06:10'!
+!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 10/10/2022 11:12:24'!
 stepAt: aTimestamp
-	self chip8 delay timesRepeat: [ self chip8 emulateCycle ].
+	self delay timesRepeat: [ self chip8 emulateCycle ].
 	self chip8 needRedraw ifTrue: [ self redrawNeeded  ].! !
 
 !Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/10/2022 09:50:38'!
@@ -842,7 +852,7 @@ testGetOperationCode
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self should: [ class = OperationCodeFxnn ]! !
 
-!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 10:03:58'!
+!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:10:17'!
 initialize
 	super initialize.
 	memory := ByteArray new: 4096 withAll: 0.
@@ -856,7 +866,6 @@ initialize
 	delayTimer := 0.
 	soundTimer := 0.
 	needRedraw := false.
-	delay := 2.
 	self loadFontSet.! !
 
 !Chip8 methodsFor: 'initialization' stamp: 'TSL 6/4/2018 08:39:21'!
