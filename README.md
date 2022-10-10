@@ -3,7 +3,7 @@
 
 ## What is it?
 
-This project is a Chip 8 emulator (interpreter) written in [Smalltalk (Cuis)](https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev).
+This project is a Chip 8 emulator (interpreter) written in [Cuis Smalltalk](https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev).
 
 The original goal of these project was to learn how to code a simple emulator in smalltalk.
 
