@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5494] on 10 October 2022 at 11:14:26 am'!
+'From Cuis 6.0 [latest update: #5597] on 17 December 2022 at 11:59:38 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 34!
+!provides: 'Chip8' 1 35!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: 'Chip8'!
 SystemOrganization addCategory: 'Chip8-Tests'!
@@ -1073,6 +1073,11 @@ fontSet
 		16rF0. 16r80. 16rF0. 16r80. 16rF0. "e"
 		16rF0. 16r80. 16rF0. 16r80. 16r80  "f" }! !
 
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'tsl 12/17/2022 11:58:19'!
+initialize
+	"work around for Sound package error - https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/issues/236"
+	Preferences name: #canRecordWhilePlaying category: #system value: false! !
+
 !Chip8 class methodsFor: 'instance creation' stamp: 'tsl 11/7/2019 10:37:37'!
 runProgram: aRom
 	(self new 
@@ -1525,3 +1530,4 @@ executeInstructionFor: anHexOperationCode on: aChip8
 !OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:58:03'!
 operationCode
 	^ 16rF000! !
+Chip8 initialize!
