@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6054] on 24 October 2023 at 5:08:28 pm'!
+'From Cuis7.1 [latest update: #6456] on 7 June 2024 at 9:36:17 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 40!
+!provides: 'Chip8' 1 41!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -269,21 +269,21 @@ speedDown
 speedUp
 	self delay: self delay + 1! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'TSL 6/7/2018 10:23:34'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/7/2024 21:33:50'!
 keyDown: anEvent
 	"Handle a key down event."
 	| keyIndex |
 	
-	keyIndex := self keyMapping indexOf: (anEvent keyValue asCharacter asLowercase) ifAbsent: [ ^ self ].
+	keyIndex := self keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
 	chip8 keys at: keyIndex put: 1.	
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'TSL 6/7/2018 10:23:41'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/7/2024 21:34:22'!
 keyUp: anEvent
 	"Handle a key up event."
 	| keyIndex |
 	
-	keyIndex := self keyMapping indexOf: (anEvent keyValue asCharacter asLowercase) ifAbsent: [ ^ self ].
+	keyIndex := self keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
 	chip8 keys at: keyIndex put: 0.! !
 
 !Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:49'!
