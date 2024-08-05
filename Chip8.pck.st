@@ -1,18 +1,211 @@
-'From Cuis7.1 [latest update: #6456] on 7 June 2024 at 9:36:17 pm'!
+'From Cuis7.1 [latest update: #6561] on 5 August 2024 at 4:00:11 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 41!
+!provides: 'Chip8' 1 47!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
+SystemOrganization addCategory: #'Chip8-Model'!
+SystemOrganization addCategory: #'Chip8-View'!
+SystemOrganization addCategory: #'Chip8-Presenter'!
 
 
-!classDefinition: #Chip8Morph category: #Chip8!
-BoxedMorph subclass: #Chip8Morph
-	instanceVariableNames: 'chip8 delay'
+!classDefinition: #OperationCode category: #'Chip8-Model'!
+Object subclass: #OperationCode
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'Chip8Morph class' category: #Chip8!
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode class' category: #'Chip8-Model'!
+OperationCode class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode0nnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode0nnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode0nnn class' category: #'Chip8-Model'!
+OperationCode0nnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode1nnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode1nnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode1nnn class' category: #'Chip8-Model'!
+OperationCode1nnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode2nnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode2nnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode2nnn class' category: #'Chip8-Model'!
+OperationCode2nnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode3xnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode3xnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode3xnn class' category: #'Chip8-Model'!
+OperationCode3xnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode4xnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode4xnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode4xnn class' category: #'Chip8-Model'!
+OperationCode4xnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode5xy0 category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode5xy0
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode5xy0 class' category: #'Chip8-Model'!
+OperationCode5xy0 class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode6xnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode6xnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode6xnn class' category: #'Chip8-Model'!
+OperationCode6xnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode7xnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode7xnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode7xnn class' category: #'Chip8-Model'!
+OperationCode7xnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode8xyn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode8xyn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode8xyn class' category: #'Chip8-Model'!
+OperationCode8xyn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCode9xy0 category: #'Chip8-Model'!
+OperationCode subclass: #OperationCode9xy0
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCode9xy0 class' category: #'Chip8-Model'!
+OperationCode9xy0 class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeAnnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeAnnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeAnnn class' category: #'Chip8-Model'!
+OperationCodeAnnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeBnnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeBnnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeBnnn class' category: #'Chip8-Model'!
+OperationCodeBnnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeCxnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeCxnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeCxnn class' category: #'Chip8-Model'!
+OperationCodeCxnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeDxyn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeDxyn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeDxyn class' category: #'Chip8-Model'!
+OperationCodeDxyn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeExnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeExnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeExnn class' category: #'Chip8-Model'!
+OperationCodeExnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #OperationCodeFxnn category: #'Chip8-Model'!
+OperationCode subclass: #OperationCodeFxnn
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'OperationCodeFxnn class' category: #'Chip8-Model'!
+OperationCodeFxnn class
+	instanceVariableNames: ''!
+
+!classDefinition: #Chip8Presenter category: #'Chip8-Presenter'!
+Object subclass: #Chip8Presenter
+	instanceVariableNames: 'model view'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Presenter'!
+!classDefinition: 'Chip8Presenter class' category: #'Chip8-Presenter'!
+Chip8Presenter class
+	instanceVariableNames: ''!
+
+!classDefinition: #Chip8 category: #'Chip8-Model'!
+ActiveModel subclass: #Chip8
+	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-Model'!
+!classDefinition: 'Chip8 class' category: #'Chip8-Model'!
+Chip8 class
+	instanceVariableNames: ''!
+
+!classDefinition: #Chip8Morph category: #'Chip8-View'!
+BoxedMorph subclass: #Chip8Morph
+	instanceVariableNames: 'delay presenter'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Chip8-View'!
+!classDefinition: 'Chip8Morph class' category: #'Chip8-View'!
 Chip8Morph class
 	instanceVariableNames: ''!
 
@@ -36,189 +229,9 @@ TestCase subclass: #OperationCodeTestCase
 OperationCodeTestCase class
 	instanceVariableNames: ''!
 
-!classDefinition: #Chip8 category: #Chip8!
-Object subclass: #Chip8
-	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'Chip8 class' category: #Chip8!
-Chip8 class
-	instanceVariableNames: ''!
 
-!classDefinition: #OperationCode category: #Chip8!
-Object subclass: #OperationCode
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode class' category: #Chip8!
-OperationCode class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode0nnn category: #Chip8!
-OperationCode subclass: #OperationCode0nnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode0nnn class' category: #Chip8!
-OperationCode0nnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode1nnn category: #Chip8!
-OperationCode subclass: #OperationCode1nnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode1nnn class' category: #Chip8!
-OperationCode1nnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode2nnn category: #Chip8!
-OperationCode subclass: #OperationCode2nnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode2nnn class' category: #Chip8!
-OperationCode2nnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode3xnn category: #Chip8!
-OperationCode subclass: #OperationCode3xnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode3xnn class' category: #Chip8!
-OperationCode3xnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode4xnn category: #Chip8!
-OperationCode subclass: #OperationCode4xnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode4xnn class' category: #Chip8!
-OperationCode4xnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode5xy0 category: #Chip8!
-OperationCode subclass: #OperationCode5xy0
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode5xy0 class' category: #Chip8!
-OperationCode5xy0 class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode6xnn category: #Chip8!
-OperationCode subclass: #OperationCode6xnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode6xnn class' category: #Chip8!
-OperationCode6xnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode7xnn category: #Chip8!
-OperationCode subclass: #OperationCode7xnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode7xnn class' category: #Chip8!
-OperationCode7xnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode8xyn category: #Chip8!
-OperationCode subclass: #OperationCode8xyn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode8xyn class' category: #Chip8!
-OperationCode8xyn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCode9xy0 category: #Chip8!
-OperationCode subclass: #OperationCode9xy0
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCode9xy0 class' category: #Chip8!
-OperationCode9xy0 class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeAnnn category: #Chip8!
-OperationCode subclass: #OperationCodeAnnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeAnnn class' category: #Chip8!
-OperationCodeAnnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeBnnn category: #Chip8!
-OperationCode subclass: #OperationCodeBnnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeBnnn class' category: #Chip8!
-OperationCodeBnnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeCxnn category: #Chip8!
-OperationCode subclass: #OperationCodeCxnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeCxnn class' category: #Chip8!
-OperationCodeCxnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeDxyn category: #Chip8!
-OperationCode subclass: #OperationCodeDxyn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeDxyn class' category: #Chip8!
-OperationCodeDxyn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeExnn category: #Chip8!
-OperationCode subclass: #OperationCodeExnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeExnn class' category: #Chip8!
-OperationCodeExnn class
-	instanceVariableNames: ''!
-
-!classDefinition: #OperationCodeFxnn category: #Chip8!
-OperationCode subclass: #OperationCodeFxnn
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Chip8'!
-!classDefinition: 'OperationCodeFxnn class' category: #Chip8!
-OperationCodeFxnn class
-	instanceVariableNames: ''!
-
-
-!Chip8Morph commentStamp: '<historical>' prior: 0!
-GUI for Chip8 cpu!
+!OperationCode commentStamp: '<historical>' prior: 0!
+OpCode Bank!
 
 !Chip8 commentStamp: 'tsl 11/7/2019 10:38:57' prior: 0!
 The CPU.
@@ -227,119 +240,725 @@ Chip8 runProgram:  '/PATH/TO/CHIP8/ROM'.
 			
 !
 
-!OperationCode commentStamp: '<historical>' prior: 0!
-OpCode Bank!
+!Chip8Morph commentStamp: '<historical>' prior: 0!
+GUI for Chip8 cpu!
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:13:34'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:28:24'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	^ self subclassResponsibility! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:59:01'!
+opcodeNN: anOpcode
+	^ anOpcode bitAnd: 16r00FF! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:30:26'!
+opcodeNNN: anOpcode
+	^ anOpcode bitAnd: 16r0FFF! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:35:34'!
+opcodeX: anOpcode
+	^  (anOpcode bitAnd: 16r0F00) bitShift: -8! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 12:46:16'!
+opcodeY: anOpcode
+	^  (anOpcode bitAnd: 16r00F0) bitShift: -4! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:21:53'!
+operationCode
+	^ self subclassResponsibility! !
+
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:41:03'!
+operationCodeClassFor: anOperationCode
+	| operationCodeClass |
+	operationCodeClass := self subclasses 
+			detect: [ :cls | cls operationCode =  (anOperationCode bitAnd: 16rF000) ].
+	^ operationCodeClass
+! !
+
+!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:38'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	| e0 ee |
+	e0 := 16r00E0.
+	ee := 16r00EE.
+	
+	(self opcodeNN: anHexOperationCode ) = e0 
+		ifTrue:[
+			"Clear the display"
+			aChip8 clearDisplay.
+			aChip8 incrementPC.
+			aChip8 addDrawFlag.
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = ee 
+		ifTrue:[
+			"Return from subroutine."
+			aChip8 stackAt: (aChip8 sp) put: nil. "review"
+			aChip8 decrementSP.
+			aChip8 pc: (aChip8 stackAt: (aChip8 sp)) + 2.
+		]! !
+
+!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:11'!
+operationCode
+	^ 16r0000! !
+
+!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:25'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"1NNN: Jumps to address NNN"
+	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
+
+!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:41'!
+operationCode
+	^ 16r1000! !
+
+!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:47'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"2NNN: Calls subroutine at NNN"
+	aChip8 stackAt: (aChip8 sp) put: aChip8 pc.
+	aChip8 incrementSP.
+	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
+
+!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:52'!
+operationCode
+	^ 16r2000! !
+
+!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:38'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"3XNN: Skips the next instruction if VX equals NN"
+	| x nn |
+	x := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode.
+	aChip8 incrementPC.
+	(aChip8 registerAt: x) = nn
+		ifTrue: [ aChip8 incrementPC ]
+			! !
+
+!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:00'!
+operationCode
+	^ 16r3000! !
+
+!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:27'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"4XNN: Skip the next instruction if VX !!= NN"
+	| x nn |
+	x := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode .
+	aChip8  incrementPC.
+	(aChip8 registerAt: x)  ~= nn
+		ifTrue: [ aChip8  incrementPC ]
+	! !
+
+!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:13'!
+operationCode
+	^ 16r4000! !
+
+!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:15'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"5XY0 Skips the next instruction if VX equals VY"
+	| x y | 
+	x := self opcodeX: anHexOperationCode.
+	y := self opcodeY: anHexOperationCode.
+	aChip8  incrementPC.
+	
+	(aChip8 registerAt: x) = (aChip8 registerAt: y)
+		ifTrue: [ aChip8  incrementPC ]
+	! !
+
+!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:20'!
+operationCode
+	^ 16r5000! !
+
+!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 11:28:54'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"6XNN: Set VX to NN"
+	| vx nn |
+	vx := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode.
+	aChip8 registerAt: vx  put: nn.
+	aChip8  incrementPC.! !
+
+!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:31'!
+operationCode
+	^ 16r6000! !
+
+!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:01'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"7XNN: Adds NN to VX"
+	| x nn valueAtX|
+	x := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode.
+	valueAtX := aChip8 registerAt: x.
+	aChip8 registerAt: x put: (valueAtX  + nn).
+	aChip8 incrementPC.! !
+
+!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:47'!
+operationCode
+	^ 16r7000! !
+
+!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:23:51'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	| x y opcode |
+	x := self opcodeX: anHexOperationCode.
+	y := self opcodeY: anHexOperationCode.
+	aChip8 incrementPC.
+	opcode := anHexOperationCode bitAnd: 16r000F.
+
+	opcode = 16r0
+		ifTrue: [
+			"8XY0: Sets VX to the value of VY"
+			aChip8 registerAt: x put: (aChip8 registerAt: y).		
+		]. 	
+
+	opcode = 16r1
+		ifTrue: [
+			"Sets VX to VX or VY."
+			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitOr: (aChip8 registerAt: y)).
+		]. 
+	
+	opcode = 16r2
+		ifTrue: [
+			"8XY2: Sets VX to VX and VY."
+			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitAnd: (aChip8 registerAt: y)).
+		]. 
+	
+	opcode = 16r3
+		ifTrue: [
+			"8XY3 Sets VX to VX xor VY."
+			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitXor: (aChip8 registerAt: y)).
+		]. 
+
+	opcode = 16r4
+		ifTrue: [
+			"8XY4: Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't."
+			| result |
+			result :=  (aChip8 registerAt: x) + (aChip8 registerAt: y).
+
+			((aChip8 registerAt: y) > (16rFF - (aChip8 registerAt: x)))
+				ifTrue: [ "carry"
+					aChip8 registerAt: 16rF put: 1 ]
+				ifFalse: [ "NOT carry"
+					aChip8 registerAt: 16rF put: 0 ].
+			aChip8 registerAt: x put: result.
+		].
+	
+	opcode = 16r5
+		ifTrue: [
+			"VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
+			| result |
+			result :=  (aChip8 registerAt: x) - (aChip8 registerAt: y).
+			(result < 0)
+				ifTrue: [ "Borrow"
+					aChip8 registerAt: 16rF put: 0 ]
+				ifFalse: [ "no borrow"
+					aChip8 registerAt: 16rF put: 1 ].
+			aChip8 registerAt: x put: result.
+		].
+	
+	opcode = 16r6
+		ifTrue: [
+			"Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift."
+			aChip8 registerAt: 16rF put: ((aChip8 registerAt: x) bitAnd: 16r1).
+			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift: -1).
+		].	
+	
+	opcode = 16r7
+		ifTrue: [
+			"Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
+			| result |
+			result :=  (aChip8 registerAt: y) - (aChip8 registerAt: x).
+			(result < 0)
+				ifTrue: [ aChip8 registerAt: 16rF put: 0. ]
+				ifFalse: [ aChip8 registerAt: 16rF put: 1. ].
+			aChip8 registerAt: x put: result.
+		].	
+	
+	opcode = 16rE
+		ifTrue: [
+			"Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift"
+			aChip8 registerAt: 16rF put: ((aChip8 registerAt: x) bitAnd: 16r80).
+			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift:1).
+		].! !
+
+!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:00'!
+operationCode
+	^ 16r8000! !
+
+!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:22:06'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"9XY0 Skips the next instruction if VX doesn't equal VY"
+	| x y |
+	x := self opcodeX: anHexOperationCode.
+	y := self opcodeY: anHexOperationCode.
+	aChip8  incrementPC.
+	
+	(aChip8 registerAt: x) ~= (aChip8 registerAt: y)
+		ifTrue: [ aChip8  incrementPC ]! !
+
+!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 14:01:27'!
+operationCode
+	^ 16r9000! !
+
+!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:57'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"ANNN: Set I to NNN"
+	aChip8 i: (self opcodeNNN:anHexOperationCode).
+	aChip8 incrementPC.! !
+
+!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:54'!
+operationCode
+	^ 16rA000! !
+
+!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:51'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"BNNN Jumps to the address NNN plus V0."
+	| nnn extra |
+	nnn := self opcodeNNN: anHexOperationCode.
+	extra := aChip8 registerAt: 0.
+	aChip8 pc: nnn  + extra.
+	! !
+
+!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:14'!
+operationCode
+	^ 16rB000! !
+
+!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:44'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"CXNN: Set VX to a random number and NN."
+	| x nn randomNumber |
+	x := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode.
+	randomNumber := (16rFF atRandom) bitAnd: nn.
+	aChip8 registerAt: x put: randomNumber.
+	aChip8 incrementPC.! !
+
+!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:29'!
+operationCode
+	^ 16rC000! !
+
+!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 14:20:19'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	"DXYN: Draw a sprite (X, Y) size (8, N). Sprite is located at I"
+	| x y height |
+	x := aChip8 registerAt: (self opcodeX: anHexOperationCode).
+	y := aChip8 registerAt: (self opcodeY: anHexOperationCode).
+	height := anHexOperationCode bitAnd: 16r000F.
+	aChip8 registerAt: 16rF put: 0.
+	
+	0 to: (height-1) do: [ :yLine | | pixel | 
+		pixel := aChip8 memoryAt: yLine. 
+		0 to: 7 do: [ :xLine | 
+			(pixel bitAnd: (16r80 bitShift: xLine negated)) ~=  0 
+				ifTrue: [ 
+					| index |
+					index := x + xLine + ( y + yLine * 64).
+					index < (aChip8 display size)
+						ifTrue: [
+							(aChip8 displayAt: (index)) = 1
+								ifTrue: [  aChip8 registerAt: 16rF put: 1 ].
+							aChip8 displayAt: index put: ((aChip8 displayAt: index) bitXor: 1) ]	]		
+		]
+	].
+
+	aChip8 incrementPC.
+	aChip8 addDrawFlag.
+! !
+
+!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:41'!
+operationCode
+	^ 16rD000! !
+
+!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:19'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	| x ex9e exa1 key |
+	ex9e := 16r009E.
+	exa1 := 16r00A1.
+	x := self opcodeX: anHexOperationCode.
+	key := aChip8 registerAt: x.
+	aChip8 incrementPC.
+	
+	(self opcodeNN: anHexOperationCode ) = ex9e 
+		ifTrue:[
+			"EX9E Skip the next instruction if the Key VX is pressed"
+			(aChip8 keyAt: key) = 1
+				ifTrue: [ aChip8 incrementPC. ]
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = exa1 
+		ifTrue:[
+			"EXA1 Skip the next instruction if the Key VX is NOT pressed"
+			(aChip8 keyAt: key) = 0
+				ifTrue: [ aChip8 incrementPC. ]
+		].! !
+
+!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:55'!
+operationCode
+	^ 16rE000! !
+
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/14/2018 13:38:29'!
+executeInstructionFor: anHexOperationCode on: aChip8
+	| x  fx07 fx0A fx15 fx18 fx1E fx29 fx33 fx55 fx65 |
+	fx07 := 16r0007.
+	fx0A := 16r000A.
+	fx15 := 16r0015.
+	fx18 := 16r0018.
+	fx1E := 16r001E.
+	fx29 := 16r0029.
+	fx33 := 16r0033.
+	fx55 := 16r0055.
+	fx65 := 16r0065.
+	
+	x := self opcodeX: anHexOperationCode.
+	
+	(self opcodeNN: anHexOperationCode ) = fx07 
+		ifTrue:[
+			"FX07: Set VX to the value of delay_timer"
+			aChip8 registerAt: x put: aChip8 delayTimer.
+			aChip8  incrementPC.
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx0A 
+		ifTrue:[
+			"A key press is awaited, and then stored in VX"
+			0 to: (aChip8 keys size -1) do: [ :idx |
+				(aChip8 keyAt: idx) = 1
+					ifTrue: [ 
+						aChip8 registerAt: x put: idx.
+						aChip8 incrementPC.
+						^ self. "should break?" ]]
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx15 
+		ifTrue: [
+			"FX15: Sets the delay timer to VX"
+			aChip8 delayTimer: (aChip8 registerAt: x).
+			aChip8 incrementPC.
+		].
+		
+	(self opcodeNN: anHexOperationCode ) = fx18 
+		ifTrue: [
+			"FX18: Sets the sound timer to VX"
+			aChip8 soundTimer: (aChip8 registerAt: x).
+			aChip8 incrementPC.
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx1E
+		ifTrue: [
+			"FX1E: Adds VX to I"
+			aChip8 i: aChip8 i + (aChip8 registerAt: x).
+			aChip8 incrementPC.
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx29
+		ifTrue: [
+			"Sets I to the location of the sprite for the character VX (Fontset)"
+			| character |
+			character := aChip8 registerAt: x.
+			aChip8 i: 16r050 + (character * 5).
+			"aChip8 i: character * 16r5."
+			aChip8 incrementPC. 
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx33
+		ifTrue: [
+			"FX33 Store a binary-coded decimal value VX in I, I + 1 and I + 2"
+			| valueX |
+			valueX := aChip8 registerAt: x.
+			aChip8 memoryAt: 0 put:  valueX // 100.
+			aChip8 memoryAt: 1 put: (valueX // 10) \\ 10.
+			aChip8 memoryAt: 2 put: (valueX \\ 100) \\ 10.
+			aChip8 incrementPC.
+		].
+
+	(self opcodeNN: anHexOperationCode ) = fx55
+		ifTrue: [
+			"FX55 Stores V0 to VX in memory starting at address I"
+			0 to: x do: [ :idx |
+				aChip8 memoryAt: idx put: (aChip8 registerAt: idx) ].
+			aChip8 i: (aChip8 i + x + 1).
+			aChip8 incrementPC.
+		].
+	
+	(self opcodeNN: anHexOperationCode ) = fx65
+		ifTrue: [
+			"FX65 Fills V0 to VX with values from I"
+			0 to: x do: [ :idx |		
+				aChip8 registerAt: idx put: (aChip8 memoryAt: idx) ].
+			aChip8 i: (aChip8 i + x + 1).
+			aChip8 incrementPC.
+		]! !
+
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:58:03'!
+operationCode
+	^ 16rF000! !
+
+!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:52:29'!
+initializeWithProgram: aProgram
+	model := Chip8 program: aProgram.
+	view := Chip8Morph newWithPresenter: self.
+
+	model when: #needRedraw send: #redrawNeeded to: view.
+
+	view open! !
+
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:13:36'!
+defaulExtent
+	^ (Chip8 displayWidth * 10)@(Chip8 displayHeight * 10).! !
+
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:08:18'!
+displayAt: aPosition
+	^ model displayAt: aPosition! !
+
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:21:36'!
+displaySize
+	^ model display size.! !
+
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:10:49'!
+keyAt: anIndex put: aValue
+	model keys at: anIndex put: aValue! !
+
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:05:47'!
+emulateCycle
+	model emulateCycle ! !
+
+!Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:43:03'!
+runProgram: aProgram
+	|instance|
+	instance := self new initializeWithProgram: aProgram.
+	
+	^instance! !
+
+!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:10:17'!
 initialize
 	super initialize.
-	extent := (Chip8 displayWidth * 10)@(Chip8 displayHeight * 10).
-	delay := 2.
+	memory := ByteArray new: 4096 withAll: 0.
+	registers := ByteArray new: 16 withAll: 0.
+	stack := Array new: 16.
+	keys := ByteArray new:16 withAll:0.
+	display := IntegerArray new: (64 * 32) withAll:0.
+	pc := 16r200.
+	sp := 0.
+	i := 0.
+	delayTimer := 0.
+	soundTimer := 0.
+	needRedraw := false.
+	self loadFontSet.! !
+
+!Chip8 methodsFor: 'initialization' stamp: 'TSL 6/4/2018 08:39:21'!
+loadFontSet
+	"Loads the fontset into the memory"
+	| start end |
+	start := 16r050 + 1.
+	end := start + self class fontSet size - 1.
+	memory replaceFrom:start to: end with: self class fontSet ! !
+
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 8/5/2024 12:44:34'!
+addDrawFlag
+	needRedraw := true.
+	"communicate to other objects which might be interested"
+	self triggerEvent: #needRedraw! !
+
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 11:07:33'!
+clearDisplay
+	display atAllPut: 0.
 ! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 14:11:42'!
-chip8
-	^ chip8.! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:21'!
+decrementSP
+	sp := sp - 1! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/6/2018 18:35:52'!
-chip8: aChip8
-	chip8 := aChip8.! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 10:36:17'!
+emulateCycle
+	| opcode operationCodeClass |
+	"memory[pc] << 8 | memory[pc + 1];"
+	opcode := ((memory at: pc +1)  bitShift: 8) + (memory at: pc + 2).
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:09:50'!
-delay
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	^ delay! !
+	operationCodeClass := OperationCode operationCodeClassFor: opcode.
+	operationCodeClass isNil
+		ifFalse: [ operationCodeClass executeInstructionFor: opcode on: self ].
+		
+	self tickTimers.
+	! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:10:04'!
-delay: anInteger
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	delay _ anInteger! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:35'!
+incrementPC
+	pc := pc + 2! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 09:04:05'!
-keyMapping
-	^  #( $x $1 $2 $3 $q $w $e $a $s $d $z $c $4 $r $f $v )! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 5/30/2018 13:03:25'!
+incrementSP
+	sp := sp + 1! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:37:17'!
-speedDown
-	self delay = 1 ifTrue: [^ self].
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/11/2018 13:29:07'!
+loadProgram: pathToROM
+	"16r200 --> memory start index to programs. Smalltalk need +1"
+	| rom |
+	rom := pathToROM asFileEntry binaryContents.
+	memory replaceFrom: 16r201 to: (16r201 + rom size - 1) with: rom asByteArray! !
 
-	self delay: self delay - 1! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 11/22/2019 12:43:29'!
+playSound
+	self soundTimer = 0
+		ifTrue:[ 
+			[((FMSound pluckedElecBass)
+				soundForPitch: 400.0 dur: 0.02
+				loudness: 0.8) play ] forkNamed: 'BeepSignal'.]
+			! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:34:47'!
-speedUp
-	self delay: self delay + 1! !
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:50:01'!
+removeDrawFlag
+	needRedraw := false! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/7/2024 21:33:50'!
-keyDown: anEvent
-	"Handle a key down event."
-	| keyIndex |
-	
-	keyIndex := self keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
-	chip8 keys at: keyIndex put: 1.	
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/7/2018 13:40:27'!
+tickTimers
+		self soundTimer > 0 
+			ifTrue: [
+				self soundTimer: self soundTimer - 1.
+				self playSound ].
+		self delayTimer > 0 
+			ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:19'!
+delayTimer
+	"timer registers that count at 60 Hz"
+	^ delayTimer! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:22'!
+delayTimer: aInteger
+	delayTimer := aInteger! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/1/2018 12:46:41'!
+display
+	"black and white and the screen has a total of 2048 pixels (64 x 32)"
+	^ display! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:43:03'!
+displayAt: anPosition
+	^ display at: anPosition + 1! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:44:12'!
+displayAt: anPosition put: aNumber
+	display at: anPosition + 1 put: aNumber! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:24:05'!
+i
+	"Index register from 0x000 to 0xFFF"
+	^ i! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:49:25'!
+i: anObject
+	i := anObject! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 16:36:55'!
+keyAt: aPosition
+	^ keys at: aPosition + 1! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:27:07'!
+keys
+	"HEX based keypad (0x0-0xF)"
+	^ keys! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:07'!
+memoryAt: anPosition
+	^ memory at: anPosition + 1 + i! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:00'!
+memoryAt: anPosition put: aNumber
+	memory at: anPosition + 1 + i put: aNumber! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 14:41:17'!
+needRedraw
+	^ needRedraw! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:25:22'!
+pc
+	"program counter from 0x000 to 0xFFF"
+	^ pc! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:07:01'!
+pc: aNumber
+	pc := aNumber! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:50'!
+registerAt: anPosition
+	^ registers at: anPosition + 1! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:55'!
+registerAt: anPosition put: aNumber
+	registers at: anPosition + 1 put: (aNumber bitAnd: 16rFF)! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:05'!
+soundTimer
+	"timer registers that count at 60 Hz"
+	^ soundTimer! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:38'!
+soundTimer: aInteger
+	soundTimer := aInteger! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:48:47'!
+sp
+	"stack pointer"
+	^ sp! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:04'!
+stackAt: anPosition
+	^ stack at: anPosition + 1! !
+
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:08'!
+stackAt: anPosition put: aNumber
+	stack at: anPosition + 1 put: aNumber! !
+
+!Chip8 methodsFor: 'morph' stamp: 'TSL 6/7/2018 08:55:10'!
+asMorph
+	^ Chip8Morph newWithChip: self. 
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/7/2024 21:34:22'!
-keyUp: anEvent
-	"Handle a key up event."
-	| keyIndex |
-	
-	keyIndex := self keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
-	chip8 keys at: keyIndex put: 0.! !
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:44'!
+displayHeight
+	^ 32! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:49'!
-mouseEnter: evt
-	evt hand newKeyboardFocus: self.	
-	self startStepping! !
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:55'!
+displayWidth
+	^ 64! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:24'!
-mouseLeave: evt
-	evt hand releaseKeyboardFocus: self.
-	self stopStepping! !
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/1/2018 16:03:23'!
+fontSet
+	^ {
+		16rF0. 16r90. 16r90. 16r90. 16rF0. "0"
+		16r20. 16r60. 16r20. 16r20. 16r70. "1"
+		16rF0. 16r10. 16rF0. 16r80. 16rF0. "2"
+		16rF0. 16r10. 16rF0. 16r10. 16rF0. "3"
+		16r90. 16r90. 16rF0. 16r10. 16r10. "4"
+		16rF0. 16r80. 16rF0. 16r10. 16rF0. "5"
+		16rF0. 16r80. 16rF0. 16r90. 16rF0. "6"
+		16rF0. 16r10. 16r20. 16r40. 16r40. "7"
+		16rF0. 16r90. 16rF0. 16r90. 16rF0. "8"
+		16rF0. 16r90. 16rF0. 16r10. 16rF0. "9"
+		16rF0. 16r90. 16rF0. 16r90. 16r90. "a"
+		16rE0. 16r90. 16rE0. 16r90. 16rE0. "b"
+		16rF0. 16r80. 16r80. 16r80. 16rF0. "c"
+		16rE0. 16r90. 16r90. 16r90. 16rE0. "d"
+		16rF0. 16r80. 16rF0. 16r80. 16rF0. "e"
+		16rF0. 16r80. 16rF0. 16r80. 16r80  "f" }! !
 
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 09:18:48'!
-handlesKeyboard
-	^ true! !
-
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 10:20:24'!
-handlesMouseDown: aMouseButtonEvent
-	aMouseButtonEvent hand newKeyboardFocus: self.
-	^ true! !
-
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/11/2018 14:45:12'!
-handlesMouseOver: aMorphicEvent
-	aMorphicEvent hand newKeyboardFocus: self.
-	^ true
+!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:17:18'!
+program: aRom
+	^ self new 	loadProgram: aRom.
 	! !
 
-!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 10/10/2022 11:12:24'!
-stepAt: aTimestamp
-	self delay timesRepeat: [ self chip8 emulateCycle ].
-	self chip8 needRedraw ifTrue: [ self redrawNeeded  ].! !
+!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 11/7/2019 10:37:37'!
+runProgram: aRom
+	(self new 
+		loadProgram: aRom;
+		asMorph) run.! !
 
-!Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/10/2022 09:50:38'!
-stepTime
-	"correct is 16 = +- 60 per second" 
-	^ 16! !
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:13:57'!
+initializeWithPresenter: aPresenter
+	super initialize.
+	presenter := aPresenter.
+	extent  := presenter defaulExtent.
+	delay := 2.! !
 
-!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 10/19/2020 18:18:18'!
-drawOn: aCanvas
-	super drawOn: aCanvas.
-	0 to: (self chip8 display size -1) do: [ :i | 
-		| pixelcolor x y position|
-		(self chip8 displayAt: i) = 0
-			ifTrue: [ pixelcolor := Color black ]
-			ifFalse: [ pixelcolor := Color white ].
-			
-		x := i \\ 64.
-		y := (i / 64) floor integerPart.
-		position := (x * 10)@(y* 10).
-			
-		aCanvas fillRectangle: (position corner: (position + (10@10))) color: pixelcolor.
-	]
-	! !
-
-!Chip8Morph methodsFor: 'run' stamp: 'tsl 10/24/2023 17:07:55'!
-run
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:45:42'!
+open
 	| mainLayout footerLayout closeButton speedUpButton speedDownButton|
 	mainLayout := LayoutMorph newColumn.
 	mainLayout morphExtent: 650@380; color: Color lightGray .
@@ -371,15 +990,110 @@ run
 	self startStepping.
 	self activeHand newKeyboardFocus: self.! !
 
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:09:50'!
+delay
+	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
+	^ delay! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:10:04'!
+delay: anInteger
+	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
+	delay _ anInteger! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 09:04:05'!
+keyMapping
+	^  #( $x $1 $2 $3 $q $w $e $a $s $d $z $c $4 $r $f $v )! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:37:17'!
+speedDown
+	self delay = 1 ifTrue: [^ self].
+
+	self delay: self delay - 1! !
+
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:34:47'!
+speedUp
+	self delay: self delay + 1! !
+
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/5/2024 15:11:14'!
+keyDown: anEvent
+	"Handle a key down event."
+	| keyIndex |
+	
+	keyIndex := self keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
+	presenter keyAt: keyIndex put: 1.	
+! !
+
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/5/2024 15:11:36'!
+keyUp: anEvent
+	"Handle a key up event."
+	| keyIndex |
+	
+	keyIndex := self keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
+	presenter keyAt: keyIndex put: 0.! !
+
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:49'!
+mouseEnter: evt
+	evt hand newKeyboardFocus: self.	
+	self startStepping! !
+
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:24'!
+mouseLeave: evt
+	evt hand releaseKeyboardFocus: self.
+	self stopStepping! !
+
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 09:18:48'!
+handlesKeyboard
+	^ true! !
+
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 10:20:24'!
+handlesMouseDown: aMouseButtonEvent
+	aMouseButtonEvent hand newKeyboardFocus: self.
+	^ true! !
+
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/11/2018 14:45:12'!
+handlesMouseOver: aMorphicEvent
+	aMorphicEvent hand newKeyboardFocus: self.
+	^ true
+	! !
+
+!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 8/5/2024 15:49:05'!
+stepAt: aTimestamp
+	self delay timesRepeat: [ presenter emulateCycle ].! !
+
+!Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/10/2022 09:50:38'!
+stepTime
+	"correct is 16 = +- 60 per second" 
+	^ 16! !
+
+!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 8/5/2024 15:22:24'!
+drawOn: aCanvas
+	super drawOn: aCanvas.
+	0 to: (presenter displaySize -1) do: [ :i | 
+		| pixelcolor x y position|
+		(presenter displayAt: i) = 0
+			ifTrue: [ pixelcolor := Color black ]
+			ifFalse: [ pixelcolor := Color white ].
+			
+		x := i \\ 64.
+		y := (i / 64) floor integerPart.
+		position := (x * 10)@(y* 10).
+			
+		aCanvas fillRectangle: (position corner: (position + (10@10))) color: pixelcolor.
+	]
+	! !
+
 !Chip8Morph methodsFor: 'halos and balloon help' stamp: 'TSL 6/11/2018 14:28:23'!
 okayToResizeEasily
 	^ false
 ! !
 
-!Chip8Morph class methodsFor: 'instance creation' stamp: 'TSL 6/7/2018 08:53:47'!
-newWithChip: aChip8
-	^ self new 
-		chip8: aChip8! !
+!Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:50:30'!
+newWithPresenter: aPresenter
+	|instance|
+	instance := self basicNew.
+	instance initializeWithPresenter: aPresenter.
+
+	^ instance! !
 
 !Chip8TestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 09:41:31'!
 testChip8
@@ -885,677 +1599,3 @@ testGetOperationCode
 	opcode := 16rF000.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self should: [ class = OperationCodeFxnn ]! !
-
-!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:10:17'!
-initialize
-	super initialize.
-	memory := ByteArray new: 4096 withAll: 0.
-	registers := ByteArray new: 16 withAll: 0.
-	stack := Array new: 16.
-	keys := ByteArray new:16 withAll:0.
-	display := IntegerArray new: (64 * 32) withAll:0.
-	pc := 16r200.
-	sp := 0.
-	i := 0.
-	delayTimer := 0.
-	soundTimer := 0.
-	needRedraw := false.
-	self loadFontSet.! !
-
-!Chip8 methodsFor: 'initialization' stamp: 'TSL 6/4/2018 08:39:21'!
-loadFontSet
-	"Loads the fontset into the memory"
-	| start end |
-	start := 16r050 + 1.
-	end := start + self class fontSet size - 1.
-	memory replaceFrom:start to: end with: self class fontSet ! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:49:49'!
-addDrawFlag
-	needRedraw := true! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 11:07:33'!
-clearDisplay
-	display atAllPut: 0.
-! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:21'!
-decrementSP
-	sp := sp - 1! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 10:36:17'!
-emulateCycle
-	| opcode operationCodeClass |
-	"memory[pc] << 8 | memory[pc + 1];"
-	opcode := ((memory at: pc +1)  bitShift: 8) + (memory at: pc + 2).
-
-	operationCodeClass := OperationCode operationCodeClassFor: opcode.
-	operationCodeClass isNil
-		ifFalse: [ operationCodeClass executeInstructionFor: opcode on: self ].
-		
-	self tickTimers.
-	! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:35'!
-incrementPC
-	pc := pc + 2! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 5/30/2018 13:03:25'!
-incrementSP
-	sp := sp + 1! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/11/2018 13:29:07'!
-loadProgram: pathToROM
-	"16r200 --> memory start index to programs. Smalltalk need +1"
-	| rom |
-	rom := pathToROM asFileEntry binaryContents.
-	memory replaceFrom: 16r201 to: (16r201 + rom size - 1) with: rom asByteArray! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 11/22/2019 12:43:29'!
-playSound
-	self soundTimer = 0
-		ifTrue:[ 
-			[((FMSound pluckedElecBass)
-				soundForPitch: 400.0 dur: 0.02
-				loudness: 0.8) play ] forkNamed: 'BeepSignal'.]
-			! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:50:01'!
-removeDrawFlag
-	needRedraw := false! !
-
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/7/2018 13:40:27'!
-tickTimers
-		self soundTimer > 0 
-			ifTrue: [
-				self soundTimer: self soundTimer - 1.
-				self playSound ].
-		self delayTimer > 0 
-			ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'tsl 10/10/2022 10:02:33'!
-delay
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	^ delay! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'tsl 10/10/2022 10:03:21'!
-delay: anInteger
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	delay _ anInteger! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:19'!
-delayTimer
-	"timer registers that count at 60 Hz"
-	^ delayTimer! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:22'!
-delayTimer: aInteger
-	delayTimer := aInteger! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/1/2018 12:46:41'!
-display
-	"black and white and the screen has a total of 2048 pixels (64 x 32)"
-	^ display! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:43:03'!
-displayAt: anPosition
-	^ display at: anPosition + 1! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:44:12'!
-displayAt: anPosition put: aNumber
-	display at: anPosition + 1 put: aNumber! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:24:05'!
-i
-	"Index register from 0x000 to 0xFFF"
-	^ i! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:49:25'!
-i: anObject
-	i := anObject! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 16:36:55'!
-keyAt: aPosition
-	^ keys at: aPosition + 1! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:27:07'!
-keys
-	"HEX based keypad (0x0-0xF)"
-	^ keys! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:07'!
-memoryAt: anPosition
-	^ memory at: anPosition + 1 + i! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:00'!
-memoryAt: anPosition put: aNumber
-	memory at: anPosition + 1 + i put: aNumber! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 14:41:17'!
-needRedraw
-	^ needRedraw! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:25:22'!
-pc
-	"program counter from 0x000 to 0xFFF"
-	^ pc! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:07:01'!
-pc: aNumber
-	pc := aNumber! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:50'!
-registerAt: anPosition
-	^ registers at: anPosition + 1! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:55'!
-registerAt: anPosition put: aNumber
-	registers at: anPosition + 1 put: (aNumber bitAnd: 16rFF)! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:05'!
-soundTimer
-	"timer registers that count at 60 Hz"
-	^ soundTimer! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:38'!
-soundTimer: aInteger
-	soundTimer := aInteger! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:48:47'!
-sp
-	"stack pointer"
-	^ sp! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:04'!
-stackAt: anPosition
-	^ stack at: anPosition + 1! !
-
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:08'!
-stackAt: anPosition put: aNumber
-	stack at: anPosition + 1 put: aNumber! !
-
-!Chip8 methodsFor: 'morph' stamp: 'TSL 6/7/2018 08:55:10'!
-asMorph
-	^ Chip8Morph newWithChip: self. 
-! !
-
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:44'!
-displayHeight
-	^ 32! !
-
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:55'!
-displayWidth
-	^ 64! !
-
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/1/2018 16:03:23'!
-fontSet
-	^ {
-		16rF0. 16r90. 16r90. 16r90. 16rF0. "0"
-		16r20. 16r60. 16r20. 16r20. 16r70. "1"
-		16rF0. 16r10. 16rF0. 16r80. 16rF0. "2"
-		16rF0. 16r10. 16rF0. 16r10. 16rF0. "3"
-		16r90. 16r90. 16rF0. 16r10. 16r10. "4"
-		16rF0. 16r80. 16rF0. 16r10. 16rF0. "5"
-		16rF0. 16r80. 16rF0. 16r90. 16rF0. "6"
-		16rF0. 16r10. 16r20. 16r40. 16r40. "7"
-		16rF0. 16r90. 16rF0. 16r90. 16rF0. "8"
-		16rF0. 16r90. 16rF0. 16r10. 16rF0. "9"
-		16rF0. 16r90. 16rF0. 16r90. 16r90. "a"
-		16rE0. 16r90. 16rE0. 16r90. 16rE0. "b"
-		16rF0. 16r80. 16r80. 16r80. 16rF0. "c"
-		16rE0. 16r90. 16r90. 16r90. 16rE0. "d"
-		16rF0. 16r80. 16rF0. 16r80. 16rF0. "e"
-		16rF0. 16r80. 16rF0. 16r80. 16r80  "f" }! !
-
-!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 11/7/2019 10:37:37'!
-runProgram: aRom
-	(self new 
-		loadProgram: aRom;
-		asMorph) run.! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:28:24'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	^ self subclassResponsibility! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:59:01'!
-opcodeNN: anOpcode
-	^ anOpcode bitAnd: 16r00FF! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:30:26'!
-opcodeNNN: anOpcode
-	^ anOpcode bitAnd: 16r0FFF! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:35:34'!
-opcodeX: anOpcode
-	^  (anOpcode bitAnd: 16r0F00) bitShift: -8! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 12:46:16'!
-opcodeY: anOpcode
-	^  (anOpcode bitAnd: 16r00F0) bitShift: -4! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:21:53'!
-operationCode
-	^ self subclassResponsibility! !
-
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:41:03'!
-operationCodeClassFor: anOperationCode
-	| operationCodeClass |
-	operationCodeClass := self subclasses 
-			detect: [ :cls | cls operationCode =  (anOperationCode bitAnd: 16rF000) ].
-	^ operationCodeClass
-! !
-
-!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:38'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	| e0 ee |
-	e0 := 16r00E0.
-	ee := 16r00EE.
-	
-	(self opcodeNN: anHexOperationCode ) = e0 
-		ifTrue:[
-			"Clear the display"
-			aChip8 clearDisplay.
-			aChip8 incrementPC.
-			aChip8 addDrawFlag.
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = ee 
-		ifTrue:[
-			"Return from subroutine."
-			aChip8 stackAt: (aChip8 sp) put: nil. "review"
-			aChip8 decrementSP.
-			aChip8 pc: (aChip8 stackAt: (aChip8 sp)) + 2.
-		]! !
-
-!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:11'!
-operationCode
-	^ 16r0000! !
-
-!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:25'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"1NNN: Jumps to address NNN"
-	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
-
-!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:41'!
-operationCode
-	^ 16r1000! !
-
-!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:47'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"2NNN: Calls subroutine at NNN"
-	aChip8 stackAt: (aChip8 sp) put: aChip8 pc.
-	aChip8 incrementSP.
-	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
-
-!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:52'!
-operationCode
-	^ 16r2000! !
-
-!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:38'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"3XNN: Skips the next instruction if VX equals NN"
-	| x nn |
-	x := self opcodeX: anHexOperationCode.
-	nn := self opcodeNN: anHexOperationCode.
-	aChip8 incrementPC.
-	(aChip8 registerAt: x) = nn
-		ifTrue: [ aChip8 incrementPC ]
-			! !
-
-!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:00'!
-operationCode
-	^ 16r3000! !
-
-!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:27'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"4XNN: Skip the next instruction if VX !!= NN"
-	| x nn |
-	x := self opcodeX: anHexOperationCode.
-	nn := self opcodeNN: anHexOperationCode .
-	aChip8  incrementPC.
-	(aChip8 registerAt: x)  ~= nn
-		ifTrue: [ aChip8  incrementPC ]
-	! !
-
-!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:13'!
-operationCode
-	^ 16r4000! !
-
-!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:15'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"5XY0 Skips the next instruction if VX equals VY"
-	| x y | 
-	x := self opcodeX: anHexOperationCode.
-	y := self opcodeY: anHexOperationCode.
-	aChip8  incrementPC.
-	
-	(aChip8 registerAt: x) = (aChip8 registerAt: y)
-		ifTrue: [ aChip8  incrementPC ]
-	! !
-
-!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:20'!
-operationCode
-	^ 16r5000! !
-
-!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 11:28:54'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"6XNN: Set VX to NN"
-	| vx nn |
-	vx := self opcodeX: anHexOperationCode.
-	nn := self opcodeNN: anHexOperationCode.
-	aChip8 registerAt: vx  put: nn.
-	aChip8  incrementPC.! !
-
-!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:31'!
-operationCode
-	^ 16r6000! !
-
-!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:01'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"7XNN: Adds NN to VX"
-	| x nn valueAtX|
-	x := self opcodeX: anHexOperationCode.
-	nn := self opcodeNN: anHexOperationCode.
-	valueAtX := aChip8 registerAt: x.
-	aChip8 registerAt: x put: (valueAtX  + nn).
-	aChip8 incrementPC.! !
-
-!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:47'!
-operationCode
-	^ 16r7000! !
-
-!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:23:51'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	| x y opcode |
-	x := self opcodeX: anHexOperationCode.
-	y := self opcodeY: anHexOperationCode.
-	aChip8 incrementPC.
-	opcode := anHexOperationCode bitAnd: 16r000F.
-
-	opcode = 16r0
-		ifTrue: [
-			"8XY0: Sets VX to the value of VY"
-			aChip8 registerAt: x put: (aChip8 registerAt: y).		
-		]. 	
-
-	opcode = 16r1
-		ifTrue: [
-			"Sets VX to VX or VY."
-			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitOr: (aChip8 registerAt: y)).
-		]. 
-	
-	opcode = 16r2
-		ifTrue: [
-			"8XY2: Sets VX to VX and VY."
-			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitAnd: (aChip8 registerAt: y)).
-		]. 
-	
-	opcode = 16r3
-		ifTrue: [
-			"8XY3 Sets VX to VX xor VY."
-			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitXor: (aChip8 registerAt: y)).
-		]. 
-
-	opcode = 16r4
-		ifTrue: [
-			"8XY4: Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't."
-			| result |
-			result :=  (aChip8 registerAt: x) + (aChip8 registerAt: y).
-
-			((aChip8 registerAt: y) > (16rFF - (aChip8 registerAt: x)))
-				ifTrue: [ "carry"
-					aChip8 registerAt: 16rF put: 1 ]
-				ifFalse: [ "NOT carry"
-					aChip8 registerAt: 16rF put: 0 ].
-			aChip8 registerAt: x put: result.
-		].
-	
-	opcode = 16r5
-		ifTrue: [
-			"VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
-			| result |
-			result :=  (aChip8 registerAt: x) - (aChip8 registerAt: y).
-			(result < 0)
-				ifTrue: [ "Borrow"
-					aChip8 registerAt: 16rF put: 0 ]
-				ifFalse: [ "no borrow"
-					aChip8 registerAt: 16rF put: 1 ].
-			aChip8 registerAt: x put: result.
-		].
-	
-	opcode = 16r6
-		ifTrue: [
-			"Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift."
-			aChip8 registerAt: 16rF put: ((aChip8 registerAt: x) bitAnd: 16r1).
-			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift: -1).
-		].	
-	
-	opcode = 16r7
-		ifTrue: [
-			"Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
-			| result |
-			result :=  (aChip8 registerAt: y) - (aChip8 registerAt: x).
-			(result < 0)
-				ifTrue: [ aChip8 registerAt: 16rF put: 0. ]
-				ifFalse: [ aChip8 registerAt: 16rF put: 1. ].
-			aChip8 registerAt: x put: result.
-		].	
-	
-	opcode = 16rE
-		ifTrue: [
-			"Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift"
-			aChip8 registerAt: 16rF put: ((aChip8 registerAt: x) bitAnd: 16r80).
-			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift:1).
-		].! !
-
-!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:00'!
-operationCode
-	^ 16r8000! !
-
-!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:22:06'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"9XY0 Skips the next instruction if VX doesn't equal VY"
-	| x y |
-	x := self opcodeX: anHexOperationCode.
-	y := self opcodeY: anHexOperationCode.
-	aChip8  incrementPC.
-	
-	(aChip8 registerAt: x) ~= (aChip8 registerAt: y)
-		ifTrue: [ aChip8  incrementPC ]! !
-
-!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 14:01:27'!
-operationCode
-	^ 16r9000! !
-
-!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:57'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"ANNN: Set I to NNN"
-	aChip8 i: (self opcodeNNN:anHexOperationCode).
-	aChip8 incrementPC.! !
-
-!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:54'!
-operationCode
-	^ 16rA000! !
-
-!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:51'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"BNNN Jumps to the address NNN plus V0."
-	| nnn extra |
-	nnn := self opcodeNNN: anHexOperationCode.
-	extra := aChip8 registerAt: 0.
-	aChip8 pc: nnn  + extra.
-	! !
-
-!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:14'!
-operationCode
-	^ 16rB000! !
-
-!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:44'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"CXNN: Set VX to a random number and NN."
-	| x nn randomNumber |
-	x := self opcodeX: anHexOperationCode.
-	nn := self opcodeNN: anHexOperationCode.
-	randomNumber := (16rFF atRandom) bitAnd: nn.
-	aChip8 registerAt: x put: randomNumber.
-	aChip8 incrementPC.! !
-
-!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:29'!
-operationCode
-	^ 16rC000! !
-
-!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 14:20:19'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	"DXYN: Draw a sprite (X, Y) size (8, N). Sprite is located at I"
-	| x y height |
-	x := aChip8 registerAt: (self opcodeX: anHexOperationCode).
-	y := aChip8 registerAt: (self opcodeY: anHexOperationCode).
-	height := anHexOperationCode bitAnd: 16r000F.
-	aChip8 registerAt: 16rF put: 0.
-	
-	0 to: (height-1) do: [ :yLine | | pixel | 
-		pixel := aChip8 memoryAt: yLine. 
-		0 to: 7 do: [ :xLine | 
-			(pixel bitAnd: (16r80 bitShift: xLine negated)) ~=  0 
-				ifTrue: [ 
-					| index |
-					index := x + xLine + ( y + yLine * 64).
-					index < (aChip8 display size)
-						ifTrue: [
-							(aChip8 displayAt: (index)) = 1
-								ifTrue: [  aChip8 registerAt: 16rF put: 1 ].
-							aChip8 displayAt: index put: ((aChip8 displayAt: index) bitXor: 1) ]	]		
-		]
-	].
-
-	aChip8 incrementPC.
-	aChip8 addDrawFlag.
-! !
-
-!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:41'!
-operationCode
-	^ 16rD000! !
-
-!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:19'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	| x ex9e exa1 key |
-	ex9e := 16r009E.
-	exa1 := 16r00A1.
-	x := self opcodeX: anHexOperationCode.
-	key := aChip8 registerAt: x.
-	aChip8 incrementPC.
-	
-	(self opcodeNN: anHexOperationCode ) = ex9e 
-		ifTrue:[
-			"EX9E Skip the next instruction if the Key VX is pressed"
-			(aChip8 keyAt: key) = 1
-				ifTrue: [ aChip8 incrementPC. ]
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = exa1 
-		ifTrue:[
-			"EXA1 Skip the next instruction if the Key VX is NOT pressed"
-			(aChip8 keyAt: key) = 0
-				ifTrue: [ aChip8 incrementPC. ]
-		].! !
-
-!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:55'!
-operationCode
-	^ 16rE000! !
-
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/14/2018 13:38:29'!
-executeInstructionFor: anHexOperationCode on: aChip8
-	| x  fx07 fx0A fx15 fx18 fx1E fx29 fx33 fx55 fx65 |
-	fx07 := 16r0007.
-	fx0A := 16r000A.
-	fx15 := 16r0015.
-	fx18 := 16r0018.
-	fx1E := 16r001E.
-	fx29 := 16r0029.
-	fx33 := 16r0033.
-	fx55 := 16r0055.
-	fx65 := 16r0065.
-	
-	x := self opcodeX: anHexOperationCode.
-	
-	(self opcodeNN: anHexOperationCode ) = fx07 
-		ifTrue:[
-			"FX07: Set VX to the value of delay_timer"
-			aChip8 registerAt: x put: aChip8 delayTimer.
-			aChip8  incrementPC.
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx0A 
-		ifTrue:[
-			"A key press is awaited, and then stored in VX"
-			0 to: (aChip8 keys size -1) do: [ :idx |
-				(aChip8 keyAt: idx) = 1
-					ifTrue: [ 
-						aChip8 registerAt: x put: idx.
-						aChip8 incrementPC.
-						^ self. "should break?" ]]
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx15 
-		ifTrue: [
-			"FX15: Sets the delay timer to VX"
-			aChip8 delayTimer: (aChip8 registerAt: x).
-			aChip8 incrementPC.
-		].
-		
-	(self opcodeNN: anHexOperationCode ) = fx18 
-		ifTrue: [
-			"FX18: Sets the sound timer to VX"
-			aChip8 soundTimer: (aChip8 registerAt: x).
-			aChip8 incrementPC.
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx1E
-		ifTrue: [
-			"FX1E: Adds VX to I"
-			aChip8 i: aChip8 i + (aChip8 registerAt: x).
-			aChip8 incrementPC.
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx29
-		ifTrue: [
-			"Sets I to the location of the sprite for the character VX (Fontset)"
-			| character |
-			character := aChip8 registerAt: x.
-			aChip8 i: 16r050 + (character * 5).
-			"aChip8 i: character * 16r5."
-			aChip8 incrementPC. 
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx33
-		ifTrue: [
-			"FX33 Store a binary-coded decimal value VX in I, I + 1 and I + 2"
-			| valueX |
-			valueX := aChip8 registerAt: x.
-			aChip8 memoryAt: 0 put:  valueX // 100.
-			aChip8 memoryAt: 1 put: (valueX // 10) \\ 10.
-			aChip8 memoryAt: 2 put: (valueX \\ 100) \\ 10.
-			aChip8 incrementPC.
-		].
-
-	(self opcodeNN: anHexOperationCode ) = fx55
-		ifTrue: [
-			"FX55 Stores V0 to VX in memory starting at address I"
-			0 to: x do: [ :idx |
-				aChip8 memoryAt: idx put: (aChip8 registerAt: idx) ].
-			aChip8 i: (aChip8 i + x + 1).
-			aChip8 incrementPC.
-		].
-	
-	(self opcodeNN: anHexOperationCode ) = fx65
-		ifTrue: [
-			"FX65 Fills V0 to VX with values from I"
-			0 to: x do: [ :idx |		
-				aChip8 registerAt: idx put: (aChip8 memoryAt: idx) ].
-			aChip8 i: (aChip8 i + x + 1).
-			aChip8 incrementPC.
-		]! !
-
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:58:03'!
-operationCode
-	^ 16rF000! !

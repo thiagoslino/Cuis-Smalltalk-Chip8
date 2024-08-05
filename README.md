@@ -19,12 +19,12 @@ A collection of public domain ROMs that can be used with this emulator can be fo
 After cloning this repo, open a workspace in Cuis and type:
 
 ```Smalltalk
-Feature require: #'Chip8'.
+Feature require: 'Chip8'.
 ```
 
 And then:
 ```Smalltalk
-Chip8 runProgram: '/path/to/rom/filename'.
+Chip8Presenter runProgram: '/path/to/rom/filename'.
 ```
 The CHIP-8 had no specified clock speed, so we'll use a delay to control it. Different games run best at different speeds, so we can control it here.
 
