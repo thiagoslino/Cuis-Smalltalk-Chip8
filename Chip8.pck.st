@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6561] on 5 August 2024 at 4:00:11 pm'!
+'From Cuis7.1 [latest update: #6604] on 18 August 2024 at 12:49:12 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 47!
+!provides: 'Chip8' 1 48!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -233,12 +233,11 @@ OperationCodeTestCase class
 !OperationCode commentStamp: '<historical>' prior: 0!
 OpCode Bank!
 
-!Chip8 commentStamp: 'tsl 11/7/2019 10:38:57' prior: 0!
-The CPU.
+!Chip8Presenter commentStamp: '<historical>' prior: 0!
+Chip8Presenter runProgram:  '/PATH/TO/CHIP8/ROM'.!
 
-Chip8 runProgram:  '/PATH/TO/CHIP8/ROM'.
-			
-!
+!Chip8 commentStamp: '<historical>' prior: 0!
+The CPU.!
 
 !Chip8Morph commentStamp: '<historical>' prior: 0!
 GUI for Chip8 cpu!
@@ -906,11 +905,6 @@ stackAt: anPosition
 stackAt: anPosition put: aNumber
 	stack at: anPosition + 1 put: aNumber! !
 
-!Chip8 methodsFor: 'morph' stamp: 'TSL 6/7/2018 08:55:10'!
-asMorph
-	^ Chip8Morph newWithChip: self. 
-! !
-
 !Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:44'!
 displayHeight
 	^ 32! !
@@ -943,12 +937,6 @@ fontSet
 program: aRom
 	^ self new 	loadProgram: aRom.
 	! !
-
-!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 11/7/2019 10:37:37'!
-runProgram: aRom
-	(self new 
-		loadProgram: aRom;
-		asMorph) run.! !
 
 !Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:13:57'!
 initializeWithPresenter: aPresenter
