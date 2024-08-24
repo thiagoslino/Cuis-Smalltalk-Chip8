@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6604] on 18 August 2024 at 12:49:12 pm'!
+'From Cuis7.1 [latest update: #6629] on 24 August 2024 at 2:50:09 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 48!
+!provides: 'Chip8' 1 49!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -710,13 +710,18 @@ displayAt: aPosition
 displaySize
 	^ model display size.! !
 
-!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:10:49'!
-keyAt: anIndex put: aValue
-	model keys at: anIndex put: aValue! !
-
 !Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:05:47'!
 emulateCycle
 	model emulateCycle ! !
+
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:10:49'!
+keyAt: anIndex put: aValue
+	model keys at: anIndex put: aValue! !
+
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/24/2024 14:49:19'!
+removeDrawFlag
+	model removeDrawFlag.
+	! !
 
 !Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:43:03'!
 runProgram: aProgram
@@ -1053,7 +1058,7 @@ stepTime
 	"correct is 16 = +- 60 per second" 
 	^ 16! !
 
-!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 8/5/2024 15:22:24'!
+!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 8/24/2024 14:46:56'!
 drawOn: aCanvas
 	super drawOn: aCanvas.
 	0 to: (presenter displaySize -1) do: [ :i | 
@@ -1067,7 +1072,8 @@ drawOn: aCanvas
 		position := (x * 10)@(y* 10).
 			
 		aCanvas fillRectangle: (position corner: (position + (10@10))) color: pixelcolor.
-	]
+	].
+	presenter removeDrawFlag.
 	! !
 
 !Chip8Morph methodsFor: 'halos and balloon help' stamp: 'TSL 6/11/2018 14:28:23'!
