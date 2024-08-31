@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6629] on 24 August 2024 at 2:50:09 pm'!
+'From Cuis7.1 [latest update: #6664] on 31 August 2024 at 11:38:47 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 49!
+!provides: 'Chip8' 1 50!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -710,6 +710,10 @@ displayAt: aPosition
 displaySize
 	^ model display size.! !
 
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/31/2024 11:33:07'!
+keyMapping
+	^  #( $x $1 $2 $3 $q $w $e $a $s $d $z $c $4 $r $f $v )! !
+
 !Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:05:47'!
 emulateCycle
 	model emulateCycle ! !
@@ -993,10 +997,6 @@ delay: anInteger
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
 	delay _ anInteger! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'TSL 6/7/2018 09:04:05'!
-keyMapping
-	^  #( $x $1 $2 $3 $q $w $e $a $s $d $z $c $4 $r $f $v )! !
-
 !Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:37:17'!
 speedDown
 	self delay = 1 ifTrue: [^ self].
@@ -1007,21 +1007,23 @@ speedDown
 speedUp
 	self delay: self delay + 1! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/5/2024 15:11:14'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/31/2024 11:34:39'!
 keyDown: anEvent
 	"Handle a key down event."
 	| keyIndex |
 	
-	keyIndex := self keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
+	keyIndex := presenter keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase 
+		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 1.	
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/5/2024 15:11:36'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/31/2024 11:34:52'!
 keyUp: anEvent
 	"Handle a key up event."
 	| keyIndex |
 	
-	keyIndex := self keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase ifAbsent: [ ^ self ].
+	keyIndex := presenter keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase 
+		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 0.! !
 
 !Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:49'!
@@ -1075,11 +1077,6 @@ drawOn: aCanvas
 	].
 	presenter removeDrawFlag.
 	! !
-
-!Chip8Morph methodsFor: 'halos and balloon help' stamp: 'TSL 6/11/2018 14:28:23'!
-okayToResizeEasily
-	^ false
-! !
 
 !Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:50:30'!
 newWithPresenter: aPresenter
