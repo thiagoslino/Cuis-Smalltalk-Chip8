@@ -32,6 +32,7 @@ The CHIP-8 had no specified clock speed, so we'll use a delay to control it. Dif
 * https://en.wikipedia.org/wiki/CHIP-8
 * http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
 * http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+* https://github.com/tobiasvl/awesome-chip-8
 
 
 ## Regular Keys
