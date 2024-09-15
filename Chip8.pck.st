@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6664] on 31 August 2024 at 11:38:47 am'!
+'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 6:23:16 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 50!
+!provides: 'Chip8' 1 51!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -200,7 +200,7 @@ Chip8 class
 	instanceVariableNames: ''!
 
 !classDefinition: #Chip8Morph category: #'Chip8-View'!
-BoxedMorph subclass: #Chip8Morph
+BoxMorph subclass: #Chip8Morph
 	instanceVariableNames: 'delay presenter'
 	classVariableNames: ''
 	poolDictionaries: ''
