@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6722] on 15 September 2024 at 6:23:16 pm'!
+'From Cuis7.5 [latest update: #7359] on 15 July 2025 at 6:41:01 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 51!
+!provides: 'Chip8' 1 54!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -350,17 +350,17 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16r4000! !
 
-!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:15'!
+!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:12:39'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"5XY0 Skips the next instruction if VX equals VY"
 	| x y | 
 	x := self opcodeX: anHexOperationCode.
 	y := self opcodeY: anHexOperationCode.
 	aChip8  incrementPC.
-	
+
 	(aChip8 registerAt: x) = (aChip8 registerAt: y)
 		ifTrue: [ aChip8  incrementPC ]
-	! !
+! !
 
 !OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:20'!
 operationCode
@@ -393,7 +393,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16r7000! !
 
-!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:23:51'!
+!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:13:36'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	| x y opcode |
 	x := self opcodeX: anHexOperationCode.
@@ -412,13 +412,13 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			"Sets VX to VX or VY."
 			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitOr: (aChip8 registerAt: y)).
 		]. 
-	
+
 	opcode = 16r2
 		ifTrue: [
 			"8XY2: Sets VX to VX and VY."
 			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitAnd: (aChip8 registerAt: y)).
 		]. 
-	
+
 	opcode = 16r3
 		ifTrue: [
 			"8XY3 Sets VX to VX xor VY."
@@ -438,7 +438,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 					aChip8 registerAt: 16rF put: 0 ].
 			aChip8 registerAt: x put: result.
 		].
-	
+
 	opcode = 16r5
 		ifTrue: [
 			"VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
@@ -451,14 +451,14 @@ executeInstructionFor: anHexOperationCode on: aChip8
 					aChip8 registerAt: 16rF put: 1 ].
 			aChip8 registerAt: x put: result.
 		].
-	
+
 	opcode = 16r6
 		ifTrue: [
 			"Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift."
 			aChip8 registerAt: 16rF put: ((aChip8 registerAt: x) bitAnd: 16r1).
 			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift: -1).
 		].	
-	
+
 	opcode = 16r7
 		ifTrue: [
 			"Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't."
@@ -469,7 +469,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 				ifFalse: [ aChip8 registerAt: 16rF put: 1. ].
 			aChip8 registerAt: x put: result.
 		].	
-	
+
 	opcode = 16rE
 		ifTrue: [
 			"Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift"
@@ -481,14 +481,14 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16r8000! !
 
-!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:22:06'!
+!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:13:46'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"9XY0 Skips the next instruction if VX doesn't equal VY"
 	| x y |
 	x := self opcodeX: anHexOperationCode.
 	y := self opcodeY: anHexOperationCode.
 	aChip8  incrementPC.
-	
+
 	(aChip8 registerAt: x) ~= (aChip8 registerAt: y)
 		ifTrue: [ aChip8  incrementPC ]! !
 
@@ -506,14 +506,14 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rA000! !
 
-!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:51'!
+!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'tsl 7/15/2025 18:30:48'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"BNNN Jumps to the address NNN plus V0."
 	| nnn extra |
 	nnn := self opcodeNNN: anHexOperationCode.
 	extra := aChip8 registerAt: 0.
-	aChip8 pc: nnn  + extra.
-	! !
+	aChip8 pc: nnn + extra.
+! !
 
 !OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:14'!
 operationCode
@@ -533,7 +533,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rC000! !
 
-!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 14:20:19'!
+!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:14:15'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"DXYN: Draw a sprite (X, Y) size (8, N). Sprite is located at I"
 	| x y height |
@@ -541,7 +541,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	y := aChip8 registerAt: (self opcodeY: anHexOperationCode).
 	height := anHexOperationCode bitAnd: 16r000F.
 	aChip8 registerAt: 16rF put: 0.
-	
+
 	0 to: (height-1) do: [ :yLine | | pixel | 
 		pixel := aChip8 memoryAt: yLine. 
 		0 to: 7 do: [ :xLine | 
@@ -565,7 +565,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rD000! !
 
-!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:19'!
+!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:15:06'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	| x ex9e exa1 key |
 	ex9e := 16r009E.
@@ -573,14 +573,14 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	x := self opcodeX: anHexOperationCode.
 	key := aChip8 registerAt: x.
 	aChip8 incrementPC.
-	
+
 	(self opcodeNN: anHexOperationCode ) = ex9e 
 		ifTrue:[
 			"EX9E Skip the next instruction if the Key VX is pressed"
 			(aChip8 keyAt: key) = 1
 				ifTrue: [ aChip8 incrementPC. ]
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = exa1 
 		ifTrue:[
 			"EXA1 Skip the next instruction if the Key VX is NOT pressed"
@@ -592,7 +592,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rE000! !
 
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/14/2018 13:38:29'!
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:15:51'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	| x  fx07 fx0A fx15 fx18 fx1E fx29 fx33 fx55 fx65 |
 	fx07 := 16r0007.
@@ -604,16 +604,16 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	fx33 := 16r0033.
 	fx55 := 16r0055.
 	fx65 := 16r0065.
-	
+
 	x := self opcodeX: anHexOperationCode.
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx07 
 		ifTrue:[
 			"FX07: Set VX to the value of delay_timer"
 			aChip8 registerAt: x put: aChip8 delayTimer.
 			aChip8  incrementPC.
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx0A 
 		ifTrue:[
 			"A key press is awaited, and then stored in VX"
@@ -624,28 +624,28 @@ executeInstructionFor: anHexOperationCode on: aChip8
 						aChip8 incrementPC.
 						^ self. "should break?" ]]
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx15 
 		ifTrue: [
 			"FX15: Sets the delay timer to VX"
 			aChip8 delayTimer: (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
-		
+
 	(self opcodeNN: anHexOperationCode ) = fx18 
 		ifTrue: [
 			"FX18: Sets the sound timer to VX"
 			aChip8 soundTimer: (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx1E
 		ifTrue: [
 			"FX1E: Adds VX to I"
 			aChip8 i: aChip8 i + (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx29
 		ifTrue: [
 			"Sets I to the location of the sprite for the character VX (Fontset)"
@@ -655,7 +655,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			"aChip8 i: character * 16r5."
 			aChip8 incrementPC. 
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx33
 		ifTrue: [
 			"FX33 Store a binary-coded decimal value VX in I, I + 1 and I + 2"
@@ -675,7 +675,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 i: (aChip8 i + x + 1).
 			aChip8 incrementPC.
 		].
-	
+
 	(self opcodeNN: anHexOperationCode ) = fx65
 		ifTrue: [
 			"FX65 Fills V0 to VX with values from I"
@@ -689,10 +689,10 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rF000! !
 
-!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:52:29'!
+!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 7/15/2025 18:20:41'!
 initializeWithProgram: aProgram
 	model := Chip8 program: aProgram.
-	view := Chip8Morph newWithPresenter: self.
+	view := Chip8Morph presenter: self.
 
 	model when: #needRedraw send: #redrawNeeded to: view.
 
@@ -727,12 +727,10 @@ removeDrawFlag
 	model removeDrawFlag.
 	! !
 
-!Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:43:03'!
+!Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 6/20/2025 10:01:35'!
 runProgram: aProgram
-	|instance|
-	instance := self new initializeWithProgram: aProgram.
-	
-	^instance! !
+	^ self new initializeWithProgram: aProgram.
+! !
 
 !Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:10:17'!
 initialize
@@ -814,14 +812,14 @@ playSound
 removeDrawFlag
 	needRedraw := false! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/7/2018 13:40:27'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 6/20/2025 10:09:56'!
 tickTimers
-		self soundTimer > 0 
-			ifTrue: [
-				self soundTimer: self soundTimer - 1.
-				self playSound ].
-		self delayTimer > 0 
-			ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
+	self soundTimer > 0 
+		ifTrue: [
+			self soundTimer: self soundTimer - 1.
+			self playSound ].
+	self delayTimer > 0 
+		ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
 
 !Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:19'!
 delayTimer
@@ -942,9 +940,9 @@ fontSet
 		16rF0. 16r80. 16rF0. 16r80. 16rF0. "e"
 		16rF0. 16r80. 16rF0. 16r80. 16r80  "f" }! !
 
-!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:17:18'!
+!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 6/20/2025 10:10:53'!
 program: aRom
-	^ self new 	loadProgram: aRom.
+	^ self new loadProgram: aRom.
 	! !
 
 !Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:13:57'!
@@ -954,36 +952,39 @@ initializeWithPresenter: aPresenter
 	extent  := presenter defaulExtent.
 	delay := 2.! !
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:45:42'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 7/15/2025 18:38:32'!
 open
-	| mainLayout footerLayout closeButton speedUpButton speedDownButton|
+	| mainLayout footerLayout button|
 	mainLayout := LayoutMorph newColumn.
-	mainLayout morphExtent: 650@380; color: Color lightGray .
+	mainLayout morphExtent: 650@380.
+
 	mainLayout addMorph: (LabelMorph contents: 'Chip-8 Emulator').
 	mainLayout addMorph: self.
 
-	closeButton := (PluggableButtonMorph model: mainLayout action: #delete)
-		label: ' Close ';
-		morphExtent: 90@30;
-		yourself.
-	speedUpButton := (PluggableButtonMorph model: self action: #speedUp)
+	footerLayout := LayoutMorph newRow.
+	footerLayout axisEdgeWeight: #rowRight.
+
+	button := (PluggableButtonMorph model: self action: #speedUp)
 		label: ' Speed + ';
 		morphExtent: 90@30;
 		yourself.
-	speedDownButton := (PluggableButtonMorph model: self action: #speedDown)
+	footerLayout addMorph: button.
+
+	button := (PluggableButtonMorph model: self action: #speedDown)
 		label: ' Speed - ';
 		morphExtent: 90@30;
 		yourself.
+	footerLayout addMorph: button.
 
-	footerLayout := LayoutMorph newRow.
-	footerLayout axisEdgeWeight: #rowRight.
-	footerLayout addMorph: speedUpButton.
-	footerLayout addMorph: speedDownButton.
-	footerLayout addMorph: closeButton.
-	
+	button := (PluggableButtonMorph model: mainLayout action: #delete)
+		label: ' Close ';
+		morphExtent: 90@30;
+		yourself.
+	footerLayout addMorph: button.
+
 	mainLayout addMorph: footerLayout.
 	mainLayout openInWorld.
-	
+
 	self startStepping.
 	self activeHand newKeyboardFocus: self.! !
 
@@ -992,10 +993,10 @@ delay
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
 	^ delay! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:10:04'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 7/15/2025 18:26:46'!
 delay: anInteger
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	delay _ anInteger! !
+	delay := anInteger! !
 
 !Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:37:17'!
 speedDown
@@ -1007,21 +1008,21 @@ speedDown
 speedUp
 	self delay: self delay + 1! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/31/2024 11:34:39'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/20/2025 10:17:18'!
 keyDown: anEvent
 	"Handle a key down event."
 	| keyIndex |
-	
+
 	keyIndex := presenter keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase 
 		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 1.	
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 8/31/2024 11:34:52'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/20/2025 10:17:25'!
 keyUp: anEvent
 	"Handle a key up event."
 	| keyIndex |
-	
+
 	keyIndex := presenter keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase 
 		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 0.! !
@@ -1060,7 +1061,7 @@ stepTime
 	"correct is 16 = +- 60 per second" 
 	^ 16! !
 
-!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 8/24/2024 14:46:56'!
+!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 6/20/2025 10:16:56'!
 drawOn: aCanvas
 	super drawOn: aCanvas.
 	0 to: (presenter displaySize -1) do: [ :i | 
@@ -1068,18 +1069,18 @@ drawOn: aCanvas
 		(presenter displayAt: i) = 0
 			ifTrue: [ pixelcolor := Color black ]
 			ifFalse: [ pixelcolor := Color white ].
-			
+
 		x := i \\ 64.
 		y := (i / 64) floor integerPart.
 		position := (x * 10)@(y* 10).
-			
+
 		aCanvas fillRectangle: (position corner: (position + (10@10))) color: pixelcolor.
 	].
 	presenter removeDrawFlag.
-	! !
+! !
 
-!Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 8/5/2024 15:50:30'!
-newWithPresenter: aPresenter
+!Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 7/15/2025 18:20:13'!
+presenter: aPresenter
 	|instance|
 	instance := self basicNew.
 	instance initializeWithPresenter: aPresenter.
