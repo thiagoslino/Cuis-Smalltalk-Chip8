@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7359] on 15 July 2025 at 6:41:01 pm'!
+'From Cuis7.5 [latest update: #7608] on 24 September 2025 at 1:36:38 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 54!
+!provides: 'Chip8' 1 55!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -998,31 +998,28 @@ delay: anInteger
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
 	delay := anInteger! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:37:17'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 9/24/2025 13:35:23'!
 speedDown
 	self delay = 1 ifTrue: [^ self].
-
 	self delay: self delay - 1! !
 
 !Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:34:47'!
 speedUp
 	self delay: self delay + 1! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/20/2025 10:17:18'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:35:17'!
 keyDown: anEvent
 	"Handle a key down event."
 	| keyIndex |
-
 	keyIndex := presenter keyMapping indexOf: (Character codePoint: anEvent keyValue) asLowercase 
 		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 1.	
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 6/20/2025 10:17:25'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:35:13'!
 keyUp: anEvent
 	"Handle a key up event."
 	| keyIndex |
-
 	keyIndex := presenter keyMapping indexOf: (Character  codePoint: anEvent keyValue) asLowercase 
 		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 0.! !
@@ -1032,9 +1029,8 @@ mouseEnter: evt
 	evt hand newKeyboardFocus: self.	
 	self startStepping! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:24'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:33:17'!
 mouseLeave: evt
-	evt hand releaseKeyboardFocus: self.
 	self stopStepping! !
 
 !Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 09:18:48'!
