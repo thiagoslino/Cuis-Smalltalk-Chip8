@@ -30,6 +30,7 @@ The CHIP-8 had no specified clock speed, so we'll use a delay to control it. Dif
 
 ## Resources
 * https://en.wikipedia.org/wiki/CHIP-8
+* https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908
 * http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
 * http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 * https://github.com/tobiasvl/awesome-chip-8
@@ -50,4 +51,4 @@ as follows:
 
 ## TODO
 * Automatic ROMs download from Zophar
-* Better morphic configuration (to configure speed, roms download button, pause, etc...)
+* Better morphic configuration (layout, roms download button, etc...)
