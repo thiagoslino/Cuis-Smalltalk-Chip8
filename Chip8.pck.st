@@ -1,6 +1,6 @@
-'From Cuis7.5 [latest update: #7608] on 24 September 2025 at 1:36:38 pm'!
+'From Cuis7.7 [latest update: #7848] on 26 March 2026 at 9:52:33 am'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 55!
+!provides: 'Chip8' 1 56!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -242,31 +242,31 @@ The CPU.!
 !Chip8Morph commentStamp: '<historical>' prior: 0!
 GUI for Chip8 cpu!
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:28:24'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:28:24'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	^ self subclassResponsibility! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:59:01'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 10:59:01'!
 opcodeNN: anOpcode
 	^ anOpcode bitAnd: 16r00FF! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:30:26'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:30:26'!
 opcodeNNN: anOpcode
 	^ anOpcode bitAnd: 16r0FFF! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 10:35:34'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 10:35:34'!
 opcodeX: anOpcode
 	^  (anOpcode bitAnd: 16r0F00) bitShift: -8! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 12:46:16'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 12:46:16'!
 opcodeY: anOpcode
 	^  (anOpcode bitAnd: 16r00F0) bitShift: -4! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:21:53'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:21:53'!
 operationCode
 	^ self subclassResponsibility! !
 
-!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:41:03'!
+!OperationCode class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:41:03'!
 operationCodeClassFor: anOperationCode
 	| operationCodeClass |
 	operationCodeClass := self subclasses 
@@ -274,13 +274,12 @@ operationCodeClassFor: anOperationCode
 	^ operationCodeClass
 ! !
 
-!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:38'!
+!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'tsl 26/Mar/2026 09:37:58'!
 executeInstructionFor: anHexOperationCode on: aChip8
-	| e0 ee |
-	e0 := 16r00E0.
-	ee := 16r00EE.
+	|nn|
+	nn := self opcodeNN: anHexOperationCode.
 	
-	(self opcodeNN: anHexOperationCode ) = e0 
+	nn = 16r00E0 
 		ifTrue:[
 			"Clear the display"
 			aChip8 clearDisplay.
@@ -288,7 +287,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 addDrawFlag.
 		].
 	
-	(self opcodeNN: anHexOperationCode ) = ee 
+	nn = 16r00EE 
 		ifTrue:[
 			"Return from subroutine."
 			aChip8 stackAt: (aChip8 sp) put: nil. "review"
@@ -296,31 +295,31 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 pc: (aChip8 stackAt: (aChip8 sp)) + 2.
 		]! !
 
-!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:11'!
+!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:22:11'!
 operationCode
 	^ 16r0000! !
 
-!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:25:25'!
+!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:25:25'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"1NNN: Jumps to address NNN"
 	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
 
-!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:41'!
+!OperationCode1nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:55:41'!
 operationCode
 	^ 16r1000! !
 
-!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:47'!
+!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:24:47'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"2NNN: Calls subroutine at NNN"
 	aChip8 stackAt: (aChip8 sp) put: aChip8 pc.
 	aChip8 incrementSP.
 	aChip8 pc: (self opcodeNNN:anHexOperationCode).! !
 
-!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:55:52'!
+!OperationCode2nnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:55:52'!
 operationCode
 	^ 16r2000! !
 
-!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:38'!
+!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:24:38'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"3XNN: Skips the next instruction if VX equals NN"
 	| x nn |
@@ -331,11 +330,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 		ifTrue: [ aChip8 incrementPC ]
 			! !
 
-!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:00'!
+!OperationCode3xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:56:00'!
 operationCode
 	^ 16r3000! !
 
-!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:27'!
+!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:24:27'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"4XNN: Skip the next instruction if VX !!= NN"
 	| x nn |
@@ -346,11 +345,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 		ifTrue: [ aChip8  incrementPC ]
 	! !
 
-!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:13'!
+!OperationCode4xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:56:13'!
 operationCode
 	^ 16r4000! !
 
-!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:12:39'!
+!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 20/Jun/2025 10:12:39'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"5XY0 Skips the next instruction if VX equals VY"
 	| x y | 
@@ -362,11 +361,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 		ifTrue: [ aChip8  incrementPC ]
 ! !
 
-!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:20'!
+!OperationCode5xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:56:20'!
 operationCode
 	^ 16r5000! !
 
-!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 11:28:54'!
+!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 11:28:54'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"6XNN: Set VX to NN"
 	| vx nn |
@@ -375,11 +374,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	aChip8 registerAt: vx  put: nn.
 	aChip8  incrementPC.! !
 
-!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:31'!
+!OperationCode6xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:56:31'!
 operationCode
 	^ 16r6000! !
 
-!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:24:01'!
+!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:24:01'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"7XNN: Adds NN to VX"
 	| x nn valueAtX|
@@ -389,11 +388,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	aChip8 registerAt: x put: (valueAtX  + nn).
 	aChip8 incrementPC.! !
 
-!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:56:47'!
+!OperationCode7xnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:56:47'!
 operationCode
 	^ 16r7000! !
 
-!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:13:36'!
+!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'tsl 20/Jun/2025 10:13:36'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	| x y opcode |
 	x := self opcodeX: anHexOperationCode.
@@ -477,11 +476,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 registerAt: x put: ((aChip8 registerAt: x) bitShift:1).
 		].! !
 
-!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:00'!
+!OperationCode8xyn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:57:00'!
 operationCode
 	^ 16r8000! !
 
-!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:13:46'!
+!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'tsl 20/Jun/2025 10:13:46'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"9XY0 Skips the next instruction if VX doesn't equal VY"
 	| x y |
@@ -492,21 +491,21 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	(aChip8 registerAt: x) ~= (aChip8 registerAt: y)
 		ifTrue: [ aChip8  incrementPC ]! !
 
-!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 14:01:27'!
+!OperationCode9xy0 class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 14:01:27'!
 operationCode
 	^ 16r9000! !
 
-!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:57'!
+!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:21:57'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"ANNN: Set I to NNN"
 	aChip8 i: (self opcodeNNN:anHexOperationCode).
 	aChip8 incrementPC.! !
 
-!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:22:54'!
+!OperationCodeAnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:22:54'!
 operationCode
 	^ 16rA000! !
 
-!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'tsl 7/15/2025 18:30:48'!
+!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'tsl 15/Jul/2025 18:30:48'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"BNNN Jumps to the address NNN plus V0."
 	| nnn extra |
@@ -515,11 +514,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	aChip8 pc: nnn + extra.
 ! !
 
-!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:14'!
+!OperationCodeBnnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:57:14'!
 operationCode
 	^ 16rB000! !
 
-!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 6/11/2018 12:21:44'!
+!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 11/Jun/2018 12:21:44'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"CXNN: Set VX to a random number and NN."
 	| x nn randomNumber |
@@ -529,11 +528,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	aChip8 registerAt: x put: randomNumber.
 	aChip8 incrementPC.! !
 
-!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:29'!
+!OperationCodeCxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:57:29'!
 operationCode
 	^ 16rC000! !
 
-!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:14:15'!
+!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'tsl 20/Jun/2025 10:14:15'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	"DXYN: Draw a sprite (X, Y) size (8, N). Sprite is located at I"
 	| x y height |
@@ -561,60 +560,50 @@ executeInstructionFor: anHexOperationCode on: aChip8
 	aChip8 addDrawFlag.
 ! !
 
-!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:41'!
+!OperationCodeDxyn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:57:41'!
 operationCode
 	^ 16rD000! !
 
-!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:15:06'!
+!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'tsl 26/Mar/2026 09:40:52'!
 executeInstructionFor: anHexOperationCode on: aChip8
-	| x ex9e exa1 key |
-	ex9e := 16r009E.
-	exa1 := 16r00A1.
+	| x key nn |
+	nn := self opcodeNN: anHexOperationCode.
 	x := self opcodeX: anHexOperationCode.
 	key := aChip8 registerAt: x.
 	aChip8 incrementPC.
 
-	(self opcodeNN: anHexOperationCode ) = ex9e 
+	nn = 16r009E 
 		ifTrue:[
 			"EX9E Skip the next instruction if the Key VX is pressed"
 			(aChip8 keyAt: key) = 1
 				ifTrue: [ aChip8 incrementPC. ]
 		].
 
-	(self opcodeNN: anHexOperationCode ) = exa1 
+	nn = 16r00A1 
 		ifTrue:[
 			"EXA1 Skip the next instruction if the Key VX is NOT pressed"
 			(aChip8 keyAt: key) = 0
 				ifTrue: [ aChip8 incrementPC. ]
 		].! !
 
-!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:57:55'!
+!OperationCodeExnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:57:55'!
 operationCode
 	^ 16rE000! !
 
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'tsl 6/20/2025 10:15:51'!
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'tsl 26/Mar/2026 09:44:21'!
 executeInstructionFor: anHexOperationCode on: aChip8
-	| x  fx07 fx0A fx15 fx18 fx1E fx29 fx33 fx55 fx65 |
-	fx07 := 16r0007.
-	fx0A := 16r000A.
-	fx15 := 16r0015.
-	fx18 := 16r0018.
-	fx1E := 16r001E.
-	fx29 := 16r0029.
-	fx33 := 16r0033.
-	fx55 := 16r0055.
-	fx65 := 16r0065.
-
+	| x  nn |
 	x := self opcodeX: anHexOperationCode.
+	nn := self opcodeNN: anHexOperationCode.
 
-	(self opcodeNN: anHexOperationCode ) = fx07 
+	nn = 16r0007 
 		ifTrue:[
 			"FX07: Set VX to the value of delay_timer"
 			aChip8 registerAt: x put: aChip8 delayTimer.
 			aChip8  incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx0A 
+	nn = 16r000A 
 		ifTrue:[
 			"A key press is awaited, and then stored in VX"
 			0 to: (aChip8 keys size -1) do: [ :idx |
@@ -625,28 +614,28 @@ executeInstructionFor: anHexOperationCode on: aChip8
 						^ self. "should break?" ]]
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx15 
+	nn = 16r0015 
 		ifTrue: [
 			"FX15: Sets the delay timer to VX"
 			aChip8 delayTimer: (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx18 
+	nn = 16r0018 
 		ifTrue: [
 			"FX18: Sets the sound timer to VX"
 			aChip8 soundTimer: (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx1E
+	nn = 16r001E
 		ifTrue: [
 			"FX1E: Adds VX to I"
 			aChip8 i: aChip8 i + (aChip8 registerAt: x).
 			aChip8 incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx29
+	nn = 16r0029
 		ifTrue: [
 			"Sets I to the location of the sprite for the character VX (Fontset)"
 			| character |
@@ -656,7 +645,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 incrementPC. 
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx33
+	nn = 16r0033
 		ifTrue: [
 			"FX33 Store a binary-coded decimal value VX in I, I + 1 and I + 2"
 			| valueX |
@@ -667,7 +656,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx55
+	nn = 16r0055
 		ifTrue: [
 			"FX55 Stores V0 to VX in memory starting at address I"
 			0 to: x do: [ :idx |
@@ -676,7 +665,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 incrementPC.
 		].
 
-	(self opcodeNN: anHexOperationCode ) = fx65
+	nn = 16r0065
 		ifTrue: [
 			"FX65 Fills V0 to VX with values from I"
 			0 to: x do: [ :idx |		
@@ -685,11 +674,11 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 incrementPC.
 		]! !
 
-!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 5/30/2018 08:58:03'!
+!OperationCodeFxnn class methodsFor: 'as yet unclassified' stamp: 'TSL 30/May/2018 08:58:03'!
 operationCode
 	^ 16rF000! !
 
-!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 7/15/2025 18:20:41'!
+!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 15/Jul/2025 18:20:41'!
 initializeWithProgram: aProgram
 	model := Chip8 program: aProgram.
 	view := Chip8Morph presenter: self.
@@ -698,41 +687,41 @@ initializeWithProgram: aProgram
 
 	view open! !
 
-!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:13:36'!
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 5/Aug/2024 15:13:36'!
 defaulExtent
 	^ (Chip8 displayWidth * 10)@(Chip8 displayHeight * 10).! !
 
-!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:08:18'!
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 5/Aug/2024 15:08:18'!
 displayAt: aPosition
 	^ model displayAt: aPosition! !
 
-!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/5/2024 15:21:36'!
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 5/Aug/2024 15:21:36'!
 displaySize
 	^ model display size.! !
 
-!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 8/31/2024 11:33:07'!
+!Chip8Presenter methodsFor: 'accessing' stamp: 'tsl 31/Aug/2024 11:33:07'!
 keyMapping
 	^  #( $x $1 $2 $3 $q $w $e $a $s $d $z $c $4 $r $f $v )! !
 
-!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:05:47'!
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 5/Aug/2024 15:05:47'!
 emulateCycle
 	model emulateCycle ! !
 
-!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/5/2024 15:10:49'!
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 5/Aug/2024 15:10:49'!
 keyAt: anIndex put: aValue
 	model keys at: anIndex put: aValue! !
 
-!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 8/24/2024 14:49:19'!
+!Chip8Presenter methodsFor: 'emulation' stamp: 'tsl 24/Aug/2024 14:49:19'!
 removeDrawFlag
 	model removeDrawFlag.
 	! !
 
-!Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 6/20/2025 10:01:35'!
+!Chip8Presenter class methodsFor: 'instance creation' stamp: 'tsl 20/Jun/2025 10:01:35'!
 runProgram: aProgram
 	^ self new initializeWithProgram: aProgram.
 ! !
 
-!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/10/2022 11:10:17'!
+!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/Oct/2022 11:10:17'!
 initialize
 	super initialize.
 	memory := ByteArray new: 4096 withAll: 0.
@@ -748,7 +737,7 @@ initialize
 	needRedraw := false.
 	self loadFontSet.! !
 
-!Chip8 methodsFor: 'initialization' stamp: 'TSL 6/4/2018 08:39:21'!
+!Chip8 methodsFor: 'initialization' stamp: 'TSL 4/Jun/2018 08:39:21'!
 loadFontSet
 	"Loads the fontset into the memory"
 	| start end |
@@ -756,22 +745,22 @@ loadFontSet
 	end := start + self class fontSet size - 1.
 	memory replaceFrom:start to: end with: self class fontSet ! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'tsl 8/5/2024 12:44:34'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 5/Aug/2024 12:44:34'!
 addDrawFlag
 	needRedraw := true.
 	"communicate to other objects which might be interested"
 	self triggerEvent: #needRedraw! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 11:07:33'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 14/Jun/2018 11:07:33'!
 clearDisplay
 	display atAllPut: 0.
 ! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:21'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 1/Jun/2018 13:04:21'!
 decrementSP
 	sp := sp - 1! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/14/2018 10:36:17'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 14/Jun/2018 10:36:17'!
 emulateCycle
 	| opcode operationCodeClass |
 	"memory[pc] << 8 | memory[pc + 1];"
@@ -784,22 +773,22 @@ emulateCycle
 	self tickTimers.
 	! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/1/2018 13:04:35'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 1/Jun/2018 13:04:35'!
 incrementPC
 	pc := pc + 2! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 5/30/2018 13:03:25'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 30/May/2018 13:03:25'!
 incrementSP
 	sp := sp + 1! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/11/2018 13:29:07'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 11/Jun/2018 13:29:07'!
 loadProgram: pathToROM
 	"16r200 --> memory start index to programs. Smalltalk need +1"
 	| rom |
 	rom := pathToROM asFileEntry binaryContents.
 	memory replaceFrom: 16r201 to: (16r201 + rom size - 1) with: rom asByteArray! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 11/22/2019 12:43:29'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 22/Nov/2019 12:43:29'!
 playSound
 	self soundTimer = 0
 		ifTrue:[ 
@@ -808,11 +797,11 @@ playSound
 				loudness: 0.8) play ] forkNamed: 'BeepSignal'.]
 			! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 6/4/2018 09:50:01'!
+!Chip8 methodsFor: 'emulation' stamp: 'TSL 4/Jun/2018 09:50:01'!
 removeDrawFlag
 	needRedraw := false! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'tsl 6/20/2025 10:09:56'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 20/Jun/2025 10:09:56'!
 tickTimers
 	self soundTimer > 0 
 		ifTrue: [
@@ -821,106 +810,106 @@ tickTimers
 	self delayTimer > 0 
 		ifTrue: [ self delayTimer: self delayTimer - 1 ].! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:19'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 08:37:19'!
 delayTimer
 	"timer registers that count at 60 Hz"
 	^ delayTimer! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:22'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 10:27:22'!
 delayTimer: aInteger
 	delayTimer := aInteger! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/1/2018 12:46:41'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 1/Jun/2018 12:46:41'!
 display
 	"black and white and the screen has a total of 2048 pixels (64 x 32)"
 	^ display! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:43:03'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 09:43:03'!
 displayAt: anPosition
 	^ display at: anPosition + 1! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:44:12'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 09:44:12'!
 displayAt: anPosition put: aNumber
 	display at: anPosition + 1 put: aNumber! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:24:05'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018 09:24:05'!
 i
 	"Index register from 0x000 to 0xFFF"
 	^ i! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:49:25'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018 12:49:25'!
 i: anObject
 	i := anObject! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 16:36:55'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018 16:36:55'!
 keyAt: aPosition
 	^ keys at: aPosition + 1! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:27:07'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 13:27:07'!
 keys
 	"HEX based keypad (0x0-0xF)"
 	^ keys! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:07'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 7/Jun/2018 17:23:07'!
 memoryAt: anPosition
 	^ memory at: anPosition + 1 + i! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 17:23:00'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 7/Jun/2018 17:23:00'!
 memoryAt: anPosition put: aNumber
 	memory at: anPosition + 1 + i put: aNumber! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/7/2018 14:41:17'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 7/Jun/2018 14:41:17'!
 needRedraw
 	^ needRedraw! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 09:25:22'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018 09:25:22'!
 pc
 	"program counter from 0x000 to 0xFFF"
 	^ pc! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 13:07:01'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 13:07:01'!
 pc: aNumber
 	pc := aNumber! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:50'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 08:59:50'!
 registerAt: anPosition
 	^ registers at: anPosition + 1! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:59:55'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 08:59:55'!
 registerAt: anPosition put: aNumber
 	registers at: anPosition + 1 put: (aNumber bitAnd: 16rFF)! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 08:37:05'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 08:37:05'!
 soundTimer
 	"timer registers that count at 60 Hz"
 	^ soundTimer! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 10:27:38'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 10:27:38'!
 soundTimer: aInteger
 	soundTimer := aInteger! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 5/30/2018 12:48:47'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018 12:48:47'!
 sp
 	"stack pointer"
 	^ sp! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:04'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 09:00:04'!
 stackAt: anPosition
 	^ stack at: anPosition + 1! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 6/4/2018 09:00:08'!
+!Chip8 methodsFor: 'accessing' stamp: 'TSL 4/Jun/2018 09:00:08'!
 stackAt: anPosition put: aNumber
 	stack at: anPosition + 1 put: aNumber! !
 
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:44'!
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/Jun/2018 18:31:44'!
 displayHeight
 	^ 32! !
 
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/6/2018 18:31:55'!
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/Jun/2018 18:31:55'!
 displayWidth
 	^ 64! !
 
-!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 6/1/2018 16:03:23'!
+!Chip8 class methodsFor: 'as yet unclassified' stamp: 'TSL 1/Jun/2018 16:03:23'!
 fontSet
 	^ {
 		16rF0. 16r90. 16r90. 16r90. 16rF0. "0"
@@ -940,19 +929,19 @@ fontSet
 		16rF0. 16r80. 16rF0. 16r80. 16rF0. "e"
 		16rF0. 16r80. 16rF0. 16r80. 16r80  "f" }! !
 
-!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 6/20/2025 10:10:53'!
+!Chip8 class methodsFor: 'instance creation' stamp: 'tsl 20/Jun/2025 10:10:53'!
 program: aRom
 	^ self new loadProgram: aRom.
 	! !
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 8/5/2024 15:13:57'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 5/Aug/2024 15:13:57'!
 initializeWithPresenter: aPresenter
 	super initialize.
 	presenter := aPresenter.
 	extent  := presenter defaulExtent.
 	delay := 2.! !
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 7/15/2025 18:38:32'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 15/Jul/2025 18:38:32'!
 open
 	| mainLayout footerLayout button|
 	mainLayout := LayoutMorph newColumn.
@@ -988,26 +977,26 @@ open
 	self startStepping.
 	self activeHand newKeyboardFocus: self.! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/10/2022 11:09:50'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/Oct/2022 11:09:50'!
 delay
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
 	^ delay! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 7/15/2025 18:26:46'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 15/Jul/2025 18:26:46'!
 delay: anInteger
 	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
 	delay := anInteger! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 9/24/2025 13:35:23'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Sep/2025 13:35:23'!
 speedDown
 	self delay = 1 ifTrue: [^ self].
 	self delay: self delay - 1! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/24/2023 14:34:47'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Oct/2023 14:34:47'!
 speedUp
 	self delay: self delay + 1! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:35:17'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 24/Sep/2025 13:35:17'!
 keyDown: anEvent
 	"Handle a key down event."
 	| keyIndex |
@@ -1016,7 +1005,7 @@ keyDown: anEvent
 	presenter keyAt: keyIndex put: 1.	
 ! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:35:13'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 24/Sep/2025 13:35:13'!
 keyUp: anEvent
 	"Handle a key up event."
 	| keyIndex |
@@ -1024,40 +1013,40 @@ keyUp: anEvent
 		ifAbsent: [ ^ self ].
 	presenter keyAt: keyIndex put: 0.! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 10/24/2023 17:03:49'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 24/Oct/2023 17:03:49'!
 mouseEnter: evt
 	evt hand newKeyboardFocus: self.	
 	self startStepping! !
 
-!Chip8Morph methodsFor: 'events' stamp: 'tsl 9/24/2025 13:33:17'!
+!Chip8Morph methodsFor: 'events' stamp: 'tsl 24/Sep/2025 13:33:17'!
 mouseLeave: evt
 	self stopStepping! !
 
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 09:18:48'!
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 7/Jun/2018 09:18:48'!
 handlesKeyboard
 	^ true! !
 
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/7/2018 10:20:24'!
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 7/Jun/2018 10:20:24'!
 handlesMouseDown: aMouseButtonEvent
 	aMouseButtonEvent hand newKeyboardFocus: self.
 	^ true! !
 
-!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 6/11/2018 14:45:12'!
+!Chip8Morph methodsFor: 'event handling testing' stamp: 'TSL 11/Jun/2018 14:45:12'!
 handlesMouseOver: aMorphicEvent
 	aMorphicEvent hand newKeyboardFocus: self.
 	^ true
 	! !
 
-!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 8/5/2024 15:49:05'!
+!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 5/Aug/2024 15:49:05'!
 stepAt: aTimestamp
 	self delay timesRepeat: [ presenter emulateCycle ].! !
 
-!Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/10/2022 09:50:38'!
+!Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/Oct/2022 09:50:38'!
 stepTime
 	"correct is 16 = +- 60 per second" 
 	^ 16! !
 
-!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 6/20/2025 10:16:56'!
+!Chip8Morph methodsFor: 'drawing' stamp: 'tsl 20/Jun/2025 10:16:56'!
 drawOn: aCanvas
 	super drawOn: aCanvas.
 	0 to: (presenter displaySize -1) do: [ :i | 
@@ -1075,7 +1064,7 @@ drawOn: aCanvas
 	presenter removeDrawFlag.
 ! !
 
-!Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 7/15/2025 18:20:13'!
+!Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 15/Jul/2025 18:20:13'!
 presenter: aPresenter
 	|instance|
 	instance := self basicNew.
@@ -1083,7 +1072,7 @@ presenter: aPresenter
 
 	^ instance! !
 
-!Chip8TestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 09:41:31'!
+!Chip8TestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 09:41:31'!
 testChip8
 	| chip8 fontSetMemoryIndex |
 	chip8 := Chip8 new.
@@ -1100,7 +1089,7 @@ testChip8
 		self should: [ (chip8 memoryAt: fontSetMemoryIndex + idx) = (Chip8 fontSet at: idx +1) ]].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/1/2018 13:35:42'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018 13:35:42'!
 testExecuteInstruction00E0
 	| class opcode chip8 |
 	opcode := 16r00E0.
@@ -1114,7 +1103,7 @@ testExecuteInstruction00E0
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/1/2018 14:01:59'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018 14:01:59'!
 testExecuteInstruction00EE
 	| class opcode chip8 sp1 |
 	opcode := 16r00EE.
@@ -1131,7 +1120,7 @@ testExecuteInstruction00EE
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 09:45:11'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 09:45:11'!
 testExecuteInstruction1nnn
 	| class opcode chip8 |
 	opcode := 16r1222.
@@ -1143,7 +1132,7 @@ testExecuteInstruction1nnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/1/2018 13:48:22'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018 13:48:22'!
 testExecuteInstruction2nnn
 	| class opcode chip8 sp1|
 	opcode := 16r2333.
@@ -1158,7 +1147,7 @@ testExecuteInstruction2nnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:39:27'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:39:27'!
 testExecuteInstruction3nnnNotSkip
 	| class opcode chip8 |
 	opcode := 16r3144.
@@ -1172,7 +1161,7 @@ testExecuteInstruction3nnnNotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:38:52'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:38:52'!
 testExecuteInstruction3nnnSkip
 	| class opcode chip8 |
 	opcode := 16r3144.
@@ -1186,7 +1175,7 @@ testExecuteInstruction3nnnSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:49:35'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:49:35'!
 testExecuteInstruction4nnnNotSkip
 	| class opcode chip8 |
 	opcode := 16r4155.
@@ -1200,7 +1189,7 @@ testExecuteInstruction4nnnNotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:48:58'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:48:58'!
 testExecuteInstruction4nnnSkip
 	| class opcode chip8 |
 	opcode := 16r4155.
@@ -1214,7 +1203,7 @@ testExecuteInstruction4nnnSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:57:13'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:57:13'!
 testExecuteInstruction5xy0NotSkip
 	| class opcode chip8 |
 	opcode := 16r5120.
@@ -1229,7 +1218,7 @@ testExecuteInstruction5xy0NotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:57:36'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:57:36'!
 testExecuteInstruction5xy0Skip
 	| class opcode chip8 |
 	opcode := 16r5120.
@@ -1244,7 +1233,7 @@ testExecuteInstruction5xy0Skip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 11:34:17'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 11:34:17'!
 testExecuteInstruction6xnn
 	| class opcode chip8 |
 	opcode := 16r6233.
@@ -1257,7 +1246,7 @@ testExecuteInstruction6xnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 14:23:58'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 14:23:58'!
 testExecuteInstruction7xnn
 	| class opcode chip8 |
 	opcode := 16r7133.
@@ -1272,7 +1261,7 @@ testExecuteInstruction7xnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/1/2018 15:45:21'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018 15:45:21'!
 testExecuteInstruction8xy0
 	| class opcode chip8 |
 	opcode := 16r8120.
@@ -1288,7 +1277,7 @@ testExecuteInstruction8xy0
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:59:53'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:59:53'!
 testExecuteInstruction9xy0NotSkip
 	| class opcode chip8 |
 	opcode := 16r9120.
@@ -1303,7 +1292,7 @@ testExecuteInstruction9xy0NotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 13:59:35'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 13:59:35'!
 testExecuteInstruction9xy0Skip
 	| class opcode chip8 |
 	opcode := 16r9120.
@@ -1318,7 +1307,7 @@ testExecuteInstruction9xy0Skip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 09:44:07'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 09:44:07'!
 testExecuteInstructionAnnn
 	| class opcode chip8 |
 	opcode := 16rA2F0.
@@ -1330,7 +1319,7 @@ testExecuteInstructionAnnn
 	self should: [ chip8 i = 16r2F0 ].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 14:57:42'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 14:57:42'!
 testExecuteInstructionBnnn
 	| class opcode chip8 |
 	opcode := 16rB001.
@@ -1343,7 +1332,7 @@ testExecuteInstructionBnnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 15:12:26'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 15:12:26'!
 testExecuteInstructionCxnn
 	| class opcode chip8 |
 	opcode := 16rC122.
@@ -1355,7 +1344,7 @@ testExecuteInstructionCxnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 09:49:18'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 09:49:18'!
 testExecuteInstructionDxyn
 	| class opcode chip8 |
 	opcode := 16rD112.
@@ -1366,7 +1355,7 @@ testExecuteInstructionDxyn
 	self should: [ chip8 pc = 16r202 ].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/1/2018 12:25:40'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018 12:25:40'!
 testExecuteInstructionExnn
 	| class opcode chip8 |
 	opcode := 16rE1A1.
@@ -1383,7 +1372,7 @@ testExecuteInstructionExnn
 	class executeInstructionFor: opcode on: chip8.
 	self should: [ chip8 pc = 16r202 ].! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 13:10:16'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 13:10:16'!
 testExecuteInstructionFx07
 	| class opcode chip8 |
 	opcode := 16rF507.
@@ -1397,7 +1386,7 @@ testExecuteInstructionFx07
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 13:45:44'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 13:45:44'!
 testExecuteInstructionFx0A
 	| class opcode chip8 |
 	opcode := 16rF30A.
@@ -1411,7 +1400,7 @@ testExecuteInstructionFx0A
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 13:15:31'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 13:15:31'!
 testExecuteInstructionFx15
 	| class opcode chip8 |
 	opcode := 16rF315.
@@ -1426,7 +1415,7 @@ testExecuteInstructionFx15
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 13:16:17'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 13:16:17'!
 testExecuteInstructionFx18
 	| class opcode chip8 |
 	opcode := 16rF418.
@@ -1441,7 +1430,7 @@ testExecuteInstructionFx18
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 13:48:25'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 13:48:25'!
 testExecuteInstructionFx1E
 	| class opcode chip8 |
 	opcode := 16rF11E.
@@ -1456,7 +1445,7 @@ testExecuteInstructionFx1E
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/11/2018 12:35:54'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 11/Jun/2018 12:35:54'!
 testExecuteInstructionFx29
 	| class opcode chip8 |
 	opcode := 16rF129.
@@ -1470,7 +1459,7 @@ testExecuteInstructionFx29
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 14:11:03'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 14:11:03'!
 testExecuteInstructionFx33
 	| class opcode chip8 |
 	opcode := 16rF133.
@@ -1486,7 +1475,7 @@ testExecuteInstructionFx33
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/11/2018 12:44:59'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 11/Jun/2018 12:44:59'!
 testExecuteInstructionFx55
 	| class opcode chip8 |
 	opcode := 16rF255.
@@ -1502,7 +1491,7 @@ testExecuteInstructionFx55
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 6/4/2018 14:15:15'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018 14:15:15'!
 testExecuteInstructionFx65
 	| class opcode chip8 |
 	opcode := 16rF265.
@@ -1521,7 +1510,7 @@ testExecuteInstructionFx65
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 5/30/2018 14:16:44'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018 14:16:44'!
 testGetOperationCode
 	| class opcode |
 	opcode := 16r0000.
