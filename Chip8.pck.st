@@ -1,6 +1,6 @@
-'From Cuis7.9 [latest update: #8014] on 19 June 2026 at 6:50:37 pm'!
+'From Cuis7.9 [latest update: #8017] on 24 June 2026 at 4:23:01 pm'!
 'Description A CHIP-8 emulator'!
-!provides: 'Chip8' 1 57!
+!provides: 'Chip8' 1 60!
 !requires: 'Sound' 1 19 nil!
 SystemOrganization addCategory: #Chip8!
 SystemOrganization addCategory: #'Chip8-Tests'!
@@ -191,7 +191,7 @@ Chip8Presenter class
 
 !classDefinition: #Chip8 category: #'Chip8-Model'!
 ActiveModel subclass: #Chip8
-	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needRedraw'
+	instanceVariableNames: 'memory registers stack i pc sp keys display delayTimer soundTimer needsRedraw'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8-Model'!
@@ -201,7 +201,7 @@ Chip8 class
 
 !classDefinition: #Chip8Morph category: #'Chip8-View'!
 BoxMorph subclass: #Chip8Morph
-	instanceVariableNames: 'delay presenter'
+	instanceVariableNames: 'delay presenter toolbar'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Chip8-View'!
@@ -274,11 +274,11 @@ operationCodeClassFor: anOperationCode
 	^ operationCodeClass
 ! !
 
-!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'tsl 26/Mar/2026, 12:37:58 pm (UTC)'!
+!OperationCode0nnn class methodsFor: 'as yet unclassified' stamp: 'tsl 24/Jun/2026, 7:09:03 pm (UTC)'!
 executeInstructionFor: anHexOperationCode on: aChip8
 	|nn|
 	nn := self opcodeNN: anHexOperationCode.
-	
+
 	nn = 16r00E0 
 		ifTrue:[
 			"Clear the display"
@@ -286,7 +286,7 @@ executeInstructionFor: anHexOperationCode on: aChip8
 			aChip8 incrementPC.
 			aChip8 addDrawFlag.
 		].
-	
+
 	nn = 16r00EE 
 		ifTrue:[
 			"Return from subroutine."
@@ -678,12 +678,12 @@ executeInstructionFor: anHexOperationCode on: aChip8
 operationCode
 	^ 16rF000! !
 
-!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 15/Jul/2025, 9:20:41 pm (UTC)'!
+!Chip8Presenter methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 6:57:55 pm (UTC)'!
 initializeWithProgram: aProgram
 	model := Chip8 program: aProgram.
 	view := Chip8Morph presenter: self.
 
-	model when: #needRedraw send: #redrawNeeded to: view.
+	model when: #needsRedraw send: #redrawNeeded to: view.
 
 	view open! !
 
@@ -721,35 +721,35 @@ runProgram: aProgram
 	^ self new initializeWithProgram: aProgram.
 ! !
 
-!Chip8 methodsFor: 'initialization' stamp: 'tsl 10/Oct/2022, 2:10:17 pm (UTC)'!
+!Chip8 methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 6:58:08 pm (UTC)'!
 initialize
 	super initialize.
 	memory := ByteArray new: 4096 withAll: 0.
 	registers := ByteArray new: 16 withAll: 0.
 	stack := Array new: 16.
 	keys := ByteArray new:16 withAll:0.
-	display := IntegerArray new: (64 * 32) withAll:0.
+	display := IntegerArray new: (Chip8 displayWidth * Chip8 displayHeight ) withAll: 0.
 	pc := 16r200.
 	sp := 0.
 	i := 0.
 	delayTimer := 0.
 	soundTimer := 0.
-	needRedraw := false.
+	needsRedraw := false.
 	self loadFontSet.! !
 
-!Chip8 methodsFor: 'initialization' stamp: 'TSL 4/Jun/2018, 11:39:21 am (UTC)'!
+!Chip8 methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 6:50:59 pm (UTC)'!
 loadFontSet
 	"Loads the fontset into the memory"
 	| start end |
 	start := 16r050 + 1.
-	end := start + self class fontSet size - 1.
-	memory replaceFrom:start to: end with: self class fontSet ! !
+	end := start + Chip8 fontSet size - 1.
+	memory replaceFrom:start to: end with: Chip8 fontSet ! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'tsl 5/Aug/2024, 3:44:34 pm (UTC)'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 24/Jun/2026, 6:58:02 pm (UTC)'!
 addDrawFlag
-	needRedraw := true.
+	needsRedraw := true.
 	"communicate to other objects which might be interested"
-	self triggerEvent: #needRedraw! !
+	self triggerEvent: #needsRedraw! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 14/Jun/2018, 2:07:33 pm (UTC)'!
 clearDisplay
@@ -760,7 +760,7 @@ clearDisplay
 decrementSP
 	sp := sp - 1! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 14/Jun/2018, 1:36:17 pm (UTC)'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 24/Jun/2026, 7:06:56 pm (UTC)'!
 emulateCycle
 	| opcode operationCodeClass |
 	"memory[pc] << 8 | memory[pc + 1];"
@@ -769,9 +769,9 @@ emulateCycle
 	operationCodeClass := OperationCode operationCodeClassFor: opcode.
 	operationCodeClass isNil
 		ifFalse: [ operationCodeClass executeInstructionFor: opcode on: self ].
-		
+
 	self tickTimers.
-	! !
+! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'TSL 1/Jun/2018, 4:04:35 pm (UTC)'!
 incrementPC
@@ -797,9 +797,9 @@ playSound
 				loudness: 0.8) play ] forkNamed: 'BeepSignal'.]
 			! !
 
-!Chip8 methodsFor: 'emulation' stamp: 'TSL 4/Jun/2018, 12:50:01 pm (UTC)'!
+!Chip8 methodsFor: 'emulation' stamp: 'tsl 24/Jun/2026, 6:57:01 pm (UTC)'!
 removeDrawFlag
-	needRedraw := false! !
+	needsRedraw := false! !
 
 !Chip8 methodsFor: 'emulation' stamp: 'tsl 20/Jun/2025, 1:09:56 pm (UTC)'!
 tickTimers
@@ -858,9 +858,9 @@ memoryAt: anPosition
 memoryAt: anPosition put: aNumber
 	memory at: anPosition + 1 + i put: aNumber! !
 
-!Chip8 methodsFor: 'accessing' stamp: 'TSL 7/Jun/2018, 5:41:17 pm (UTC)'!
-needRedraw
-	^ needRedraw! !
+!Chip8 methodsFor: 'accessing' stamp: 'tsl 24/Jun/2026, 6:57:44 pm (UTC)'!
+needsRedraw
+	^ needsRedraw! !
 
 !Chip8 methodsFor: 'accessing' stamp: 'TSL 30/May/2018, 12:25:22 pm (UTC)'!
 pc
@@ -934,24 +934,14 @@ program: aRom
 	^ self new loadProgram: aRom.
 	! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 10/Oct/2022, 2:09:50 pm (UTC)'!
-delay
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	^ delay! !
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Jun/2026, 3:23:03 pm (UTC)'!
+slowDown
+	delay = 1 ifTrue: [^ self].
+	delay := delay - 1! !
 
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 15/Jul/2025, 9:26:46 pm (UTC)'!
-delay: anInteger
-	"The CHIP-8 had no specified clock speed, so we'll use a delay to determine the time in milliseconds between cycles. Different games run best at different speeds, so we can control it here."
-	delay := anInteger! !
-
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Sep/2025, 4:35:23 pm (UTC)'!
-speedDown
-	self delay = 1 ifTrue: [^ self].
-	self delay: self delay - 1! !
-
-!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Oct/2023, 5:34:47 pm (UTC)'!
+!Chip8Morph methodsFor: 'accessing' stamp: 'tsl 24/Jun/2026, 3:23:44 pm (UTC)'!
 speedUp
-	self delay: self delay + 1! !
+	delay := delay + 1! !
 
 !Chip8Morph methodsFor: 'drawing' stamp: 'tsl 19/Jun/2026, 9:34:26 pm (UTC)'!
 drawOn: aCanvas
@@ -1025,69 +1015,77 @@ scaleUp
 requiresVectorCanvas
 	^ false ! !
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 5/Aug/2024, 6:13:57 pm (UTC)'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 7:16:46 pm (UTC)'!
+initializeToolbar
+	| button |
+	toolbar := LayoutMorph newRow separation: 2.
+
+	button := (PluggableButtonMorph model: self action: #speedUp)
+		icon: Theme current listAddIcon;
+		setBalloonText: 'Speed up';
+		morphExtent: 32 asPoint.
+	toolbar addMorph: button.
+
+	button := (PluggableButtonMorph model: self action: #slowDown)
+		icon: Theme current listRemoveIcon;
+		setBalloonText: 'Slow down';
+		morphExtent: 32 asPoint.
+	toolbar addMorph: button.
+
+	button := (PluggableButtonMorph model: self action: #scaleUp)
+		icon: Theme current goUpIcon ;
+		setBalloonText: 'Scale up';
+		morphExtent: 32 asPoint.
+	toolbar addMorph: button.
+
+	button := (PluggableButtonMorph model: self action: #scaleDown)
+		icon: Theme current goDownIcon ;
+		setBalloonText: 'Scale down';
+		morphExtent: 32 asPoint.
+	toolbar addMorph: button.
+
+	button := (PluggableButtonMorph model: self action: #delete)
+		icon: Theme current quitIcon ;
+		setBalloonText: 'Close';
+		morphExtent: 32 asPoint.
+	toolbar addMorph: button.
+
+	! !
+
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 12:26:25 pm (UTC)'!
 initializeWithPresenter: aPresenter
 	super initialize.
 	presenter := aPresenter.
 	extent  := presenter defaulExtent.
-	delay := 2.! !
+	delay := 2.
+	self initializeToolbar.! !
 
-!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 19/Jun/2026, 9:43:22 pm (UTC)'!
+!Chip8Morph methodsFor: 'initialization' stamp: 'tsl 24/Jun/2026, 3:25:10 pm (UTC)'!
 open
-	| mainLayout footerLayout button|
+	| mainLayout |
 	mainLayout := LayoutMorph newColumn.
-	mainLayout morphExtent: 650@380.
+	mainLayout morphExtent: presenter defaulExtent + (10@35).
 
 	mainLayout addMorph: (LabelMorph contents: 'Chip-8 Emulator').
+	mainLayout addMorph: toolbar layoutSpec: LayoutSizeSpec new useMorphHeight.
 	mainLayout addMorph: self.
-
-	footerLayout := LayoutMorph newRow.
-	footerLayout axisEdgeWeight: #rowRight.
-
-	button := (PluggableButtonMorph model: self action: #speedUp)
-		label: ' Speed + ';
-		morphExtent: 90@30;
-		yourself.
-	footerLayout addMorph: button.
-
-	button := (PluggableButtonMorph model: self action: #speedDown)
-		label: ' Speed - ';
-		morphExtent: 90@30;
-		yourself.
-	footerLayout addMorph: button.
-
-	button := (PluggableButtonMorph model: self action: #scaleUp)
-		label: ' Scale + ';
-		morphExtent: 90@30;
-		yourself.
-	footerLayout addMorph: button.
-
-	button := (PluggableButtonMorph model: self action: #scaleDown)
-		label: ' Scale - ';
-		morphExtent: 90@30;
-		yourself.
-	footerLayout addMorph: button.
-
-	button := (PluggableButtonMorph model: mainLayout action: #delete)
-		label: ' Close X ';
-		morphExtent: 90@30;
-		yourself.
-	footerLayout addMorph: button.
-
-	mainLayout addMorph: footerLayout.
 	mainLayout openInWorld.
 
 	self startStepping.
 	self activeHand newKeyboardFocus: self.! !
 
-!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 5/Aug/2024, 6:49:05 pm (UTC)'!
+!Chip8Morph methodsFor: 'stepping' stamp: 'tsl 24/Jun/2026, 12:25:16 pm (UTC)'!
 stepAt: aTimestamp
-	self delay timesRepeat: [ presenter emulateCycle ].! !
+	delay timesRepeat: [ presenter emulateCycle ].! !
 
 !Chip8Morph methodsFor: 'testing' stamp: 'tsl 10/Oct/2022, 12:50:38 pm (UTC)'!
 stepTime
 	"correct is 16 = +- 60 per second" 
 	^ 16! !
+
+!Chip8Morph methodsFor: 'submorphs-add/remove' stamp: 'tsl 24/Jun/2026, 11:56:29 am (UTC)'!
+delete
+	self owner delete ! !
 
 !Chip8Morph class methodsFor: 'instance creation' stamp: 'tsl 15/Jul/2025, 9:20:13 pm (UTC)'!
 presenter: aPresenter
@@ -1097,42 +1095,42 @@ presenter: aPresenter
 
 	^ instance! !
 
-!Chip8TestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 12:41:31 pm (UTC)'!
+!Chip8TestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:05:53 pm (UTC)'!
 testChip8
 	| chip8 fontSetMemoryIndex |
 	chip8 := Chip8 new.
-	
+
 	self should: [ chip8 sp = 0 ].
 	self should: [ chip8 pc = 16r200 ].
 	self should: [ chip8 i = 0 ].
 	self should: [ chip8 delayTimer = 0 ].
 	self should: [ chip8 soundTimer = 0 ].
-	
+
 	fontSetMemoryIndex := 16r050.
-	
+
 	0 to: Chip8 fontSet size - 1 do: [ :idx |
 		self should: [ (chip8 memoryAt: fontSetMemoryIndex + idx) = (Chip8 fontSet at: idx +1) ]].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018, 4:35:42 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:00:23 pm (UTC)'!
 testExecuteInstruction00E0
 	| class opcode chip8 |
 	opcode := 16r00E0.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
 	self should: [ chip8 pc = 16r202 ].
-	chip8  display do: [ :each |
+	chip8 display do: [ :each |
 		self should: [ each = 0 ]].
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018, 5:01:59 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:00:27 pm (UTC)'!
 testExecuteInstruction00EE
 	| class opcode chip8 sp1 |
 	opcode := 16r00EE.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 stackAt: (chip8 sp) put: 16r200.
 	chip8 incrementSP.
 	sp1 := chip8 sp.
@@ -1145,11 +1143,11 @@ testExecuteInstruction00EE
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 12:45:11 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:00:19 pm (UTC)'!
 testExecuteInstruction1nnn
 	| class opcode chip8 |
 	opcode := 16r1222.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
@@ -1157,11 +1155,11 @@ testExecuteInstruction1nnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018, 4:48:22 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:53 pm (UTC)'!
 testExecuteInstruction2nnn
 	| class opcode chip8 sp1|
 	opcode := 16r2333.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	sp1 := chip8 sp.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1172,11 +1170,11 @@ testExecuteInstruction2nnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:39:27 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:58 pm (UTC)'!
 testExecuteInstruction3nnnNotSkip
 	| class opcode chip8 |
 	opcode := 16r3144.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r22.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1186,11 +1184,11 @@ testExecuteInstruction3nnnNotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:38:52 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:00:51 pm (UTC)'!
 testExecuteInstruction3nnnSkip
 	| class opcode chip8 |
 	opcode := 16r3144.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r44.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1200,11 +1198,11 @@ testExecuteInstruction3nnnSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:49:35 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:40 pm (UTC)'!
 testExecuteInstruction4nnnNotSkip
 	| class opcode chip8 |
 	opcode := 16r4155.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r55.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1214,11 +1212,11 @@ testExecuteInstruction4nnnNotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:48:58 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:35 pm (UTC)'!
 testExecuteInstruction4nnnSkip
 	| class opcode chip8 |
 	opcode := 16r4155.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r44.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1228,11 +1226,11 @@ testExecuteInstruction4nnnSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:57:13 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:31 pm (UTC)'!
 testExecuteInstruction5xy0NotSkip
 	| class opcode chip8 |
 	opcode := 16r5120.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r55.
 	chip8 registerAt: 16r2 put: 16r11.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1243,11 +1241,11 @@ testExecuteInstruction5xy0NotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:57:36 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:26 pm (UTC)'!
 testExecuteInstruction5xy0Skip
 	| class opcode chip8 |
 	opcode := 16r5120.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r55.
 	chip8 registerAt: 16r2 put: 16r55.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1258,11 +1256,11 @@ testExecuteInstruction5xy0Skip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 2:34:17 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:23 pm (UTC)'!
 testExecuteInstruction6xnn
 	| class opcode chip8 |
 	opcode := 16r6233.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
@@ -1271,11 +1269,11 @@ testExecuteInstruction6xnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 5:23:58 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:01:57 pm (UTC)'!
 testExecuteInstruction7xnn
 	| class opcode chip8 |
 	opcode := 16r7133.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r22.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1286,11 +1284,11 @@ testExecuteInstruction7xnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018, 6:45:21 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:02:10 pm (UTC)'!
 testExecuteInstruction8xy0
 	| class opcode chip8 |
 	opcode := 16r8120.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r5.
 	chip8 registerAt: 16r2 put: 16r7.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1302,11 +1300,11 @@ testExecuteInstruction8xy0
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:59:53 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:02:27 pm (UTC)'!
 testExecuteInstruction9xy0NotSkip
 	| class opcode chip8 |
 	opcode := 16r9120.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r55.
 	chip8 registerAt: 16r2 put: 16r55.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1317,11 +1315,11 @@ testExecuteInstruction9xy0NotSkip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 4:59:35 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:02:38 pm (UTC)'!
 testExecuteInstruction9xy0Skip
 	| class opcode chip8 |
 	opcode := 16r9120.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 16r1 put: 16r55.
 	chip8 registerAt: 16r2 put: 16r11.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1332,11 +1330,11 @@ testExecuteInstruction9xy0Skip
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 12:44:07 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:02:45 pm (UTC)'!
 testExecuteInstructionAnnn
 	| class opcode chip8 |
 	opcode := 16rA2F0.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
@@ -1344,11 +1342,11 @@ testExecuteInstructionAnnn
 	self should: [ chip8 i = 16r2F0 ].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 5:57:42 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:02:51 pm (UTC)'!
 testExecuteInstructionBnnn
 	| class opcode chip8 |
 	opcode := 16rB001.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 0 put: 16r3.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1357,11 +1355,11 @@ testExecuteInstructionBnnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 30/May/2018, 6:12:26 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:02 pm (UTC)'!
 testExecuteInstructionCxnn
 	| class opcode chip8 |
 	opcode := 16rC122.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
@@ -1369,39 +1367,39 @@ testExecuteInstructionCxnn
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 12:49:18 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:08 pm (UTC)'!
 testExecuteInstructionDxyn
 	| class opcode chip8 |
 	opcode := 16rD112.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
 	self should: [ chip8 pc = 16r202 ].
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 1/Jun/2018, 3:25:40 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:25 pm (UTC)'!
 testExecuteInstructionExnn
 	| class opcode chip8 |
 	opcode := 16rE1A1.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
 	self should: [ chip8 pc = 16r204 ].
 
 	opcode := 16rE19E.
-	chip8  := Chip8  new.
+	chip8 := Chip8 new.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
 	class executeInstructionFor: opcode on: chip8.
 	self should: [ chip8 pc = 16r202 ].! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 4:10:16 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:33 pm (UTC)'!
 testExecuteInstructionFx07
 	| class opcode chip8 |
 	opcode := 16rF507.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 delayTimer: 50.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1411,11 +1409,11 @@ testExecuteInstructionFx07
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 4:45:44 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:39 pm (UTC)'!
 testExecuteInstructionFx0A
 	| class opcode chip8 |
 	opcode := 16rF30A.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 keys at: 5 put: 1. "strats  from 1"
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1425,11 +1423,11 @@ testExecuteInstructionFx0A
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 4:15:31 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:48 pm (UTC)'!
 testExecuteInstructionFx15
 	| class opcode chip8 |
 	opcode := 16rF315.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 3 put: 16r60.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1440,11 +1438,11 @@ testExecuteInstructionFx15
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 4:16:17 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:03:54 pm (UTC)'!
 testExecuteInstructionFx18
 	| class opcode chip8 |
 	opcode := 16rF418.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 4 put: 16r30.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1455,11 +1453,11 @@ testExecuteInstructionFx18
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 4:48:25 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:01 pm (UTC)'!
 testExecuteInstructionFx1E
 	| class opcode chip8 |
 	opcode := 16rF11E.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 i: 16r1.
 	chip8 registerAt: 1 put: 16r2.
 	class := OperationCode 	operationCodeClassFor: opcode.
@@ -1470,11 +1468,11 @@ testExecuteInstructionFx1E
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 11/Jun/2018, 3:35:54 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:05 pm (UTC)'!
 testExecuteInstructionFx29
 	| class opcode chip8 |
 	opcode := 16rF129.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 1 put: 16r2.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1484,11 +1482,11 @@ testExecuteInstructionFx29
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 5:11:03 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:11 pm (UTC)'!
 testExecuteInstructionFx33
 	| class opcode chip8 |
 	opcode := 16rF133.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 1 put: 16rB.
 	class := OperationCode 	operationCodeClassFor: opcode.
 	self shouldnt: [ class isNil ].
@@ -1500,11 +1498,11 @@ testExecuteInstructionFx33
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 11/Jun/2018, 3:44:59 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:15 pm (UTC)'!
 testExecuteInstructionFx55
 	| class opcode chip8 |
 	opcode := 16rF255.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 registerAt: 0 put: 16rA.
 	chip8 registerAt: 1 put: 16rB.
 	chip8 registerAt: 2 put: 16rC.
@@ -1516,11 +1514,11 @@ testExecuteInstructionFx55
 
 ! !
 
-!OperationCodeTestCase methodsFor: 'tests' stamp: 'TSL 4/Jun/2018, 5:15:15 pm (UTC)'!
+!OperationCodeTestCase methodsFor: 'tests' stamp: 'tsl 24/Jun/2026, 7:04:21 pm (UTC)'!
 testExecuteInstructionFx65
 	| class opcode chip8 |
 	opcode := 16rF265.
-	chip8 := Chip8  new.
+	chip8 := Chip8 new.
 	chip8 memoryAt: 0 put: 16rA.
 	chip8 memoryAt: 1 put: 16rB.
 	chip8 memoryAt: 2 put: 16rC.
